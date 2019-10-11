@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
-import { colors } from '../../theme/globalStyle';
-import searchIcon from '../../img/search_icon.svg';
+import { colors } from '../../../theme/globalStyle';
+import searchIcon from '../../../img/search.svg';
 
 const StyledSearch = styled.div`
   position: relative;
@@ -33,7 +33,7 @@ const StyledSearchButton = styled.div.attrs({
   font-size: 14px;
   font-weight: 300;
   line-height: 0;
-  color: ${colors.textSecondary};
+  color: ${colors.textTwo};
   z-index: 2;
 `;
 

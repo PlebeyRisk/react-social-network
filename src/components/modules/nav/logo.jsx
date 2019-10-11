@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
-import logoIcon from '../../img/logo.svg';
-import logoTextIcon from '../../img/logo-text.svg';
-import { colors } from '../../theme/globalStyle';
+import { Link } from 'react-router-dom';
+import logoIcon from '../../../img/logo.svg';
+import logoTextIcon from '../../../img/logo-text.svg';
+import { colors } from '../../../theme/globalStyle';
 
-const StyledLogo = styled.a.attrs((props) => ({
-  href: props.href
+const StyledLogo = styled(Link).attrs((props) => ({
+  to: props.to
 }))`
   flex-grow: 1;
   display: flex;
@@ -19,7 +20,7 @@ const StyledLogo = styled.a.attrs((props) => ({
 
 const StyledSeparate = styled.div`
   margin: 0 16px;
-  width: 2px;
+  width: 1px;
   height: 28px;
   background-color: ${ colors.primary };
 `;
@@ -45,7 +46,7 @@ const StyledLogoText = styled.img.attrs({
 
 const Logo = () => {
   return (
-    <StyledLogo href="#">
+    <StyledLogo to="/">
       <StyledLogoImg/>
       <StyledSeparate/>
       <StyledLogoText/>
