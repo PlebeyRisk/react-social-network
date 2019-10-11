@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components';
 import Container from '../common/container';
+import { colors } from '../../theme/globalStyle';
 
 const StyledMain = styled.main`
   flex-grow: 1;
-  background: #fafafa;
-  border-top: 1px solid #dbdbdb;
+  border-top: 1px solid ${ colors.border };
 `;
 
 const MainContainer = styled(Container)`
