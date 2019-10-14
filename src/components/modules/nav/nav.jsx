@@ -7,7 +7,12 @@ import Search from './search';
 import NavButtons from './nav_buttons';
 
 const StyledNav = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background-color: ${ colors.light };
+  border-bottom: 1px solid ${ colors.border };
 `;
 
 const NavContainer = styled(Container)`

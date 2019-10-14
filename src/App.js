@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import GlobalStyle, { colors } from './theme/globalStyle';
 import Nav from './components/modules/nav/nav';
-import Footer from './components/modules/footer/footer';
 import Main from './components/modules/main/main';
 import Explore from './components/modules/explore/explore';
 import Profile from './components/modules/profile/profile';
@@ -16,26 +15,25 @@ const StyledApp = styled.div`
 `;
 
 const StyledWrapperContent = styled.div`
-  flex-grow: 1;
+  flex: 1 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  border-top: 1px solid ${ colors.border };
 `
 
-function App() {
+const App = (props) => {
   return (
     <Router>
       <StyledApp>
         <Nav/>
         <StyledWrapperContent>
           <Switch>
-            <Route exact path="/" component={Main}/>
-            <Route path="/explore" component={Explore}/>
-            <Route path="/direct" component={Direct}/>
-            <Route path="/profile" component={Profile}/>
+            <Route exact path="/" render={ () => <Main/> }/>
+            <Route path="/explore" render={ () => <Explore/> }/>
+            <Route path="/direct" render={ () => <Direct state={props.state.direct}/> }/>
+            <Route path="/profile" render={ () => <Profile/> }/>
           </Switch>
         </StyledWrapperContent>
-        <Footer/>
       </StyledApp>
       <GlobalStyle/>
     </Router>
