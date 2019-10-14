@@ -13,11 +13,7 @@ const StyledSendMessageForm = styled.div`
   background-color: ${colors.light};
 `;
 
-const StyledTextArea = styled.div.attrs(props => ({
-  contentEditable: "true",
-  role: "textbox",
-  ariaMultiline: "true"
-}))`
+const StyledTextArea = styled.textarea`
   flex: 1;
   border: none;
   outline: 0;
@@ -30,10 +26,10 @@ const StyledTextArea = styled.div.attrs(props => ({
   word-wrap: break-word;
 `;
 
-const StyledSubmit= styled.input.attrs(props => ({
+const StyledSubmit= styled.input.attrs({
   type: "button",
   value: "Отправить"
-}))`
+})`
   flex: none;
   border: none;
   background-color: transparent;
@@ -46,11 +42,23 @@ const StyledSubmit= styled.input.attrs(props => ({
   }
 `;
 
-const SendMessageForm = () => {
+const SendMessageForm = (props) => {
+  const newMessageValue = props.newMessageValue;
+  const newMessageRef = props.newMessageRef;
+
+  const onSendMessage = () => {
+    props.sendMessage();
+  };
+
+  const onMessageChange = (e) => {
+    const value = e.currentTarget.value;
+    props.onMessageChange(value);
+  }
+
   return (
     <StyledSendMessageForm>
-      <StyledTextArea> </StyledTextArea>
-      <StyledSubmit/>
+      <StyledTextArea onChange={onMessageChange} ref={newMessageRef} value={newMessageValue}/>
+      <StyledSubmit onClick={onSendMessage}/>
     </StyledSendMessageForm>
   );
 }

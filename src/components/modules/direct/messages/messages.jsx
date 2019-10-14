@@ -11,10 +11,23 @@ const StyledMessages = styled.div`
 `;
 
 const Messages = (props) => {
+  const newMessageElem = React.createRef();
+
+  const onSendMessage = () => {
+    props.sendMessage();
+  };
+
+  const onMessageChange = (value) => {
+    props.updateNewMessage(value);
+  };
+
   return (
     <StyledMessages>
-      <MessagesBox messages={props.messages}/>
-      <SendMessageForm/>
+      <MessagesBox messages={props.messages} />
+      <SendMessageForm onMessageChange={onMessageChange}
+                       newMessageRef={newMessageElem}
+                       newMessageValue={props.newMessageValue}
+                       sendMessage={onSendMessage}/>
     </StyledMessages>
   );
 }

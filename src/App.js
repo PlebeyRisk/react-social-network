@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import GlobalStyle, { colors } from './theme/globalStyle';
+import { Route } from 'react-router-dom';
 import Nav from './components/modules/nav/nav';
 import Main from './components/modules/main/main';
 import Explore from './components/modules/explore/explore';
@@ -21,22 +20,17 @@ const StyledWrapperContent = styled.div`
   justify-content: center;
 `
 
-const App = (props) => {
+const App = () => {
   return (
-    <Router>
-      <StyledApp>
-        <Nav/>
-        <StyledWrapperContent>
-          <Switch>
-            <Route exact path="/" render={ () => <Main/> }/>
-            <Route path="/explore" render={ () => <Explore/> }/>
-            <Route path="/direct" render={ () => <Direct state={props.state.direct}/> }/>
-            <Route path="/profile" render={ () => <Profile/> }/>
-          </Switch>
-        </StyledWrapperContent>
-      </StyledApp>
-      <GlobalStyle/>
-    </Router>
+    <StyledApp>
+      <Nav/>
+      <StyledWrapperContent>
+          <Route exact path="/" render={ () => <Main/> }/>
+          <Route path="/explore" render={ () => <Explore/> }/>
+          <Route path="/direct" render={ () => <Direct/> }/>
+          <Route path="/profile" render={ () => <Profile/> }/>
+      </StyledWrapperContent>
+    </StyledApp>
   );
 }
 

@@ -9,14 +9,14 @@ const StyledMessagesBox = styled.div`
 
 const StyledMessagesWrapper = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: flex-end;
   padding: 15px;
 `;
 
 const MessagesBox = (props) => {
   const messages = props.messages.map(({senderId, receiverId, message}) => {
-    console.log(`${senderId} - ${receiverId}`);
+
     if (senderId === 0) {
       return <Message type='sent' text={message}/>
     }

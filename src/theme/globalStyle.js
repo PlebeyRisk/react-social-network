@@ -33,12 +33,12 @@ const GlobalStyle = createGlobalStyle`
     flex-grow: 1;
   }
 
-  div, input, button, a, form {
+  div, input, button, a, form, textarea {
     box-sizing: border-box;
     outline: none;
   }
 
-  div, form {
+  div, form, textarea {
     ::-webkit-scrollbar {
       width: 3px;
     }

@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
 import Container from '../../common/container';
-import { colors } from '../../../theme/globalStyle';
-import Dialogs from './dialogs/dialogs';
-import Messages from './messages/messages';
+import MessagesContainer from './messages/messagesContainer';
+import DialogsContainer from './dialogs/dialogsContainer';
 
 const StyledDirect = styled.main`
   padding: 0;
@@ -19,12 +18,12 @@ const MainContainer = styled(Container)`
   max-height: 100vh;
 `;
 
-const Direct = (props) => {
+const Direct = () => {
   return (
     <StyledDirect>
       <MainContainer>
-        <Dialogs dialogs={props.state.dialogs}/>
-        <Messages messages={props.state.messages}/>
+        <DialogsContainer/>
+        <MessagesContainer/>
       </MainContainer>
     </StyledDirect>
   );
