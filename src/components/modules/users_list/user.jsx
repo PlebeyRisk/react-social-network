@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { colors } from '../../../../theme/globalStyle';
+import { colors } from '../../../theme/globalStyle';
 
-const StyledDialog = styled(NavLink).attrs((props) => ({
+const StyledUser = styled(NavLink).attrs((props) => ({
   to: props.link
 }))`
   display: flex;
@@ -18,10 +18,10 @@ const StyledDialog = styled(NavLink).attrs((props) => ({
 `;
 
 const StyledUserAvatar = styled.div`
-  flex: 0 0 50px;
+  flex: 0 0 ${props => props.size}px;
   margin-right: 10px;
-  width: 50px;
-  height: 50px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   border-radius: 50%;
   overflow: hidden;
 `;
@@ -41,6 +41,7 @@ const StyledTextOverflow = styled.span`
 
 const StyledUserName = styled(StyledTextOverflow)`
   color: ${colors.textPrimary};
+  font-weight: 600;
 `;
 
 const StyledUserText = styled(StyledTextOverflow)`
@@ -49,22 +50,22 @@ const StyledUserText = styled(StyledTextOverflow)`
 
 const UserAvatar = (props) => {
   return (
-    <StyledUserAvatar>
-      <img src={props.image} alt="user avatar" width="50" height="50"/>
+    <StyledUserAvatar size={props.size}>
+      <img src={props.image} alt="user avatar" width={props.size} height={props.size}/>
     </StyledUserAvatar>
   );
 }
 
-const Dialog = (props) => {
+const User = (props) => {
   return (
-    <StyledDialog link={props.name}>
-      <UserAvatar image={props.image}/>
+    <StyledUser link={props.name}>
+      <UserAvatar image={props.image} size={props.size || 50}/>
       <StyledTextWrap>
         <StyledUserName>{props.name}</StyledUserName>
         <StyledUserText>{props.text}</StyledUserText>
       </StyledTextWrap>
-    </StyledDialog>
+    </StyledUser>
   );
 }
 
-export default Dialog;
+export default User;

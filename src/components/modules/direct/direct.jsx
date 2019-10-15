@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
 import Container from '../../common/container';
-import MessagesContainer from './messages/messagesContainer';
-import DialogsContainer from './dialogs/dialogsContainer';
+import MessagesContainer from './messages/messages_container';
+import DialogsContainer from './dialogs/dialogs_container';
 
 const StyledDirect = styled.main`
   padding: 0;

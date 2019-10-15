@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
+import SearchCoverContainer from './cover/cover_container';
+import SearchInputContainer from './input/input_container';
 import { colors } from '../../../../theme/globalStyle';
-import SearchCoverContainer from './search_coverContainer';
-import SearchInputContainer from './search_inputContainer';
+import SearchUsersListContainer from './users_list/users_list_container';
 
 const StyledSearch = styled.div`
   position: relative;
@@ -13,12 +14,11 @@ const StyledSearch = styled.div`
 `;
 
 const Search = () => {
-  const inputRef = React.createRef();
-
   return (
     <StyledSearch>
-      <SearchInputContainer inputRef={inputRef}/>
-      <SearchCoverContainer inputElem={inputRef}/>
+      <SearchInputContainer/>
+      <SearchCoverContainer/>
+      <SearchUsersListContainer/>
     </StyledSearch>
   );
 }

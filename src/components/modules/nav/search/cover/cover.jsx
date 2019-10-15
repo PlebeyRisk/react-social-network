@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
-import { colors } from '../../../../theme/globalStyle';
-import searchIcon from '../../../../img/search.svg';
+import { colors } from '../../../../../theme/globalStyle';
+import searchIcon from '../../../../../img/search.svg';
 
 const StyledSearchCover = styled.div.attrs({
   role: "button",

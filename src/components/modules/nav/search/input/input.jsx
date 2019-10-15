@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
-import { colors } from '../../../../theme/globalStyle';
-import searchIcon, { ReactComponent } from '../../../../img/search.svg';
-import searchClearIcon from '../../../../img/search-clear.svg'
+import { colors } from '../../../../../theme/globalStyle';
+import searchIcon from '../../../../../img/search.svg';
+import searchClearIcon from '../../../../../img/search-clear.svg'
 
 const StyledSearchInput = styled.div`
   position: relative;
