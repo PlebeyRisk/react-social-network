@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Container from '../../common/container';
 import { colors } from '../../../theme/globalStyle';
 import Logo from './logo';
-import Search from './search';
+import Search from './search/search';
 import NavButtons from './nav_buttons';
 
 const StyledNav = styled.nav`

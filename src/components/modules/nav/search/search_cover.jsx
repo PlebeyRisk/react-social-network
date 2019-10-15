@@ -1,21 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
-import { colors } from '../../../theme/globalStyle';
-import searchIcon from '../../../img/search.svg';
+import { colors } from '../../../../theme/globalStyle';
+import searchIcon from '../../../../img/search.svg';
 
-const StyledSearch = styled.div`
-  position: relative;
-  height: 28px;
-  width: 215px;
-  min-width: 125px;
-  background-color: ${ colors.light };
-
-  input {
-    border: none
-  }
-`;
-
-const StyledSearchButton = styled.div.attrs({
+const StyledSearchCover = styled.div.attrs({
   role: "button",
   tabIndex: 0
 })`
@@ -48,16 +36,18 @@ const StyledSearchIcon = styled.img.attrs({
   margin-right: 6px;
 `;
 
-const Search = () => {
+const SearchCover = (props) => {
+
+  const onClick = () => {
+    props.updateHidden();
+  }
+
   return (
-    <StyledSearch>
-      <input type="text"/>
-      <StyledSearchButton>
-        <StyledSearchIcon/>
-        Поиск
-      </StyledSearchButton>
-    </StyledSearch>
+    <StyledSearchCover onClick={onClick} hidden={props.hidden}>
+      <StyledSearchIcon/>
+      Поиск
+    </StyledSearchCover>
   );
 }
 
-export default Search;
+export default SearchCover;
