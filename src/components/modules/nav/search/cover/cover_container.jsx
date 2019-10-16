@@ -1,6 +1,6 @@
 import SearchCover from './cover';
 import { connect } from 'react-redux'
-import { updateCoverHiddenAC, updateInputFocusAC, updateUsersListHiddenAC } from '../../../../../redux/search-users-reducer';
+import { updateCoverHidden, updateInputFocus, updateUsersListHidden } from '../../../../../redux/search-users-reducer';
 
 let mapStateToProps = (state) => {
   return {
@@ -8,19 +8,9 @@ let mapStateToProps = (state) => {
   }
 }
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    updateHidden: () => {
-      let action = updateCoverHiddenAC(true);
-      dispatch(action);
-      action = updateInputFocusAC(true);
-      dispatch(action);
-      action = updateUsersListHiddenAC(false);
-      dispatch(action);
-    }
-  }
-}
-
-const SearchCoverContainer = connect(mapStateToProps, mapDispatchToProps)(SearchCover);
+const SearchCoverContainer = connect(
+  mapStateToProps,
+  { updateCoverHidden, updateInputFocus, updateUsersListHidden
+  })(SearchCover);
 
 export default SearchCoverContainer;

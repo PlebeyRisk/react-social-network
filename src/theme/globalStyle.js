@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: ${ colors.primaryText }
+    color: ${ colors.primaryText };
   }
 
   main {
@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     flex-grow: 1;
   }
 
-  div, input, button, a, form, textarea {
+  div, input, button, a, form, textarea, main, header {
     box-sizing: border-box;
     outline: none;
   }
@@ -49,8 +49,12 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  button {
+  button, a {
     cursor: pointer;
+
+    &:active {
+      opacity: 0.6;
+    }
   }
 `
 

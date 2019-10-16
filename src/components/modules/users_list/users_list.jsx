@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import User from './user';
-import defaultImage from '../../../img/users/ava-default.png'
+import defaultImage from '../../../img/users/ava-default.jpg'
 
 const StyledUsersList = styled.div`
   flex: none;

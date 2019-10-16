@@ -1,5 +1,5 @@
 import Messages from './messages'
-import { updateNewMessageActionCreator, sendMessageActionCreator } from '../../../../redux/direct-reducer';
+import { updateNewMessage, sendMessage } from '../../../../redux/direct-reducer';
 import { connect } from 'react-redux';
 
 let mapStateToProps = (state) => {
@@ -9,18 +9,9 @@ let mapStateToProps = (state) => {
   }
 }
 
-let mapDispatchToProps = (dispatch) => {
-  return {
-    updateNewMessage: (text) => {
-      const action = updateNewMessageActionCreator(text);
-      dispatch(action);
-    },
-    sendMessage: () => {
-      dispatch(sendMessageActionCreator());
-    }
-  }
-}
-
-const MessagesContainer = connect(mapStateToProps, mapDispatchToProps)(Messages);
+const MessagesContainer = connect(
+  mapStateToProps,
+  { updateNewMessage, sendMessage
+  })(Messages);
 
 export default MessagesContainer;

@@ -5,6 +5,8 @@ const UPDATE_USERSLIST_HIDDEN = 'UPDATE_USERSLIST_HIDDEN';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT';
+const SET_LAST_LOADED_PAGE = 'SET_LAST_LOADED_PAGE';
+const UPDATE_LOADING = 'UPDATE_LOADING';
 
 const initialState = {
   cover: {
@@ -19,7 +21,9 @@ const initialState = {
     hidden: true,
     totalCount: 0,
     pageSize: 10,
-    currentPage: 1
+    currentPage: 1,
+    lastLoadedPage: 0,
+    isLoading: false
   }
 }
 
@@ -80,30 +84,35 @@ const searchUsersReducer = (state = initialState, action) => {
       stateCopy.usersList.totalCount = action.totalCount;
       return stateCopy;
     }
+    case SET_LAST_LOADED_PAGE: {
+      let stateCopy = {
+        ...state,
+        usersList: { ...state.usersList}
+      };
+      stateCopy.usersList.lastLoadedPage = action.lastLoadedPage;
+      return stateCopy;
+    }
+    case UPDATE_LOADING: {
+      let stateCopy = {
+        ...state,
+        usersList: { ...state.usersList}
+      };
+      stateCopy.usersList.isLoading = action.isLoading;
+      return stateCopy;
+    }
     default:
       return state;
   }
 }
 
-export const updateCoverHiddenAC = (hidden) =>
-  ({ type: UPDATE_COVER_HIDDEN, hidden });
-
-export const updateInputFocusAC = (focus) =>
-  ({ type: UPDATE_INPUT_FOCUS, focus });
-
-export const updateInputValueAC = (value) =>
-  ({ type: UPDATE_INPUT_VALUE, value });
-
-export const updateUsersListHiddenAC = (hidden) =>
-  ({ type: UPDATE_USERSLIST_HIDDEN, hidden });
-
-export const setUsersAC = (users) =>
-  ({ type: SET_USERS, users: users });
-
-export const setCurrentPageAC = (currentPage) =>
-  ({ type: SET_CURRENT_PAGE, currentPage });
-
-export const setTotalCountAC = (totalCount) =>
-  ({ type: SET_TOTAL_COUNT, totalCount });
+export const updateCoverHidden = (hidden) => ({ type: UPDATE_COVER_HIDDEN, hidden });
+export const updateInputFocus = (focus) => ({ type: UPDATE_INPUT_FOCUS, focus });
+export const updateInputValue = (value) => ({ type: UPDATE_INPUT_VALUE, value });
+export const updateUsersListHidden = (hidden) => ({ type: UPDATE_USERSLIST_HIDDEN, hidden });
+export const setUsers = (users) => ({ type: SET_USERS, users: users });
+export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
+export const setTotalCount = (totalCount) => ({ type: SET_TOTAL_COUNT, totalCount });
+export const setLastLoadedPage = (lastLoadedPage) => ({ type: SET_LAST_LOADED_PAGE, lastLoadedPage });
+export const updateLoading = (isLoading) => ({ type: UPDATE_LOADING, isLoading });
 
 export default searchUsersReducer;

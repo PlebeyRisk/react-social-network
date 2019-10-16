@@ -58,7 +58,7 @@ const UserAvatar = (props) => {
 
 const User = (props) => {
   return (
-    <StyledUser link={props.name}>
+    <StyledUser link={`/profile/` + props.id}>
       <UserAvatar image={props.image} size={props.size || 50}/>
       <StyledTextWrap>
         <StyledUserName>{props.name}</StyledUserName>

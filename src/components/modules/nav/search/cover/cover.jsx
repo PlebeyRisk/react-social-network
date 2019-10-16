@@ -37,9 +37,10 @@ const StyledSearchIcon = styled.img.attrs({
 `;
 
 const SearchCover = (props) => {
-
   const onClick = () => {
-    props.updateHidden();
+    props.updateCoverHidden(true);
+    props.updateInputFocus(true);
+    props.updateUsersListHidden(false);
   }
 
   return (

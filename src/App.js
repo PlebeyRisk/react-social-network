@@ -4,8 +4,8 @@ import { Route } from 'react-router-dom';
 import Nav from './components/modules/nav/nav';
 import Main from './components/modules/main/main';
 import Explore from './components/modules/explore/explore';
-import Profile from './components/modules/profile/profile';
 import Direct from './components/modules/direct/direct';
+import ProfileContainer from './components/modules/profile/profile_container';
 
 const StyledApp = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ const App = () => {
           <Route exact path="/" render={ () => <Main/> }/>
           <Route path="/explore" render={ () => <Explore/> }/>
           <Route path="/direct" render={ () => <Direct/> }/>
-          <Route path="/profile" render={ () => <Profile/> }/>
+          <Route path="/profile" render={ () => <ProfileContainer/> }/>
       </StyledWrapperContent>
     </StyledApp>
   );

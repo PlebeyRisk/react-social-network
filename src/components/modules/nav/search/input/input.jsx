@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors } from '../../../../../theme/globalStyle';
 import searchIcon from '../../../../../img/search.svg';
 import searchClearIcon from '../../../../../img/search-clear.svg'
+import preloaderIcon from '../../../../../img/preloader.svg'
 
 const StyledSearchInput = styled.div`
   position: relative;
@@ -51,7 +52,7 @@ const StyledSearchClearButton = styled.button.attrs({
   height: 13px;
   transform: translateY(-50%);
   border: none;
-  background: url(${searchClearIcon}) center no-repeat;
+  background: url(${props => props.image}) center no-repeat;
   background-size: cover;
   opacity: 0.4;
 `;
@@ -60,16 +61,18 @@ class SearchInput extends React.Component {
   inputElem = React.createRef();
 
   inputOnChange = (e) => {
-    this.props.updateValue(e.currentTarget.value);
+    this.props.updateInputValue(e.currentTarget.value);
   }
 
   inputOnFocus = () => {
-    this.props.updateFocus(true);
+    this.props.updateInputFocus(true);
   }
 
   inputOnBlur = () => {
-    this.props.updateValue('');
-    this.props.updateFocus(false);
+    this.props.updateInputValue('');
+    this.props.updateInputFocus(false);
+    this.props.updateCoverHidden(false);
+    this.props.updateUsersListHidden(true);
   }
 
   onMouseDown = (e) => {
@@ -90,7 +93,7 @@ class SearchInput extends React.Component {
                onFocus={this.inputOnFocus}
                onBlur={this.inputOnBlur}
                value={this.props.value}/>
-        <StyledSearchClearButton/>
+        <StyledSearchClearButton image={this.props.usersIsLoading ? preloaderIcon : searchClearIcon}/>
       </StyledSearchInput>
     );
   }

@@ -83,8 +83,8 @@ const directReducer = (state = initialState, action) => {
   };
 }
 
-export const sendMessageActionCreator = () => ({type: SEND_MESSAGE});
-export const updateNewMessageActionCreator = (text) =>
+export const sendMessage = () => ({type: SEND_MESSAGE});
+export const updateNewMessage = (text) =>
   ({ type: UPDATE_NEW_MESSAGE, newMessage: text });
 
 export default directReducer;
