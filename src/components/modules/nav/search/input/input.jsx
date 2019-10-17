@@ -93,7 +93,7 @@ class SearchInput extends React.Component {
                onFocus={this.inputOnFocus}
                onBlur={this.inputOnBlur}
                value={this.props.value}/>
-        <StyledSearchClearButton image={this.props.usersIsLoading ? preloaderIcon : searchClearIcon}/>
+        <StyledSearchClearButton image={this.props.usersisFetching ? preloaderIcon : searchClearIcon}/>
       </StyledSearchInput>
     );
   }

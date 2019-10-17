@@ -1,21 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { updateUsersListHidden, setUsers, setCurrentPage, setTotalCount, setLastLoadedPage, updateLoading } from '../../../../../redux/search-users-reducer';
-import * as axios from 'axios';
+import { updateUsersListHidden, setUsers, addUsers, setCurrentPage, setTotalCount, setLastLoadedPage, updateFetching, setTerm } from '../../../../../redux/search-users-reducer';
 import SearchUserList from './users_list';
+import API from '../../../../../api/api';
 
 class SearchUsersListContainer extends React.Component {
-  getUsers() {
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then( response => {
-      this.props.setUsers(response.data.items);
-      this.props.setTotalCount(response.data.totalCount);
-      this.props.updateLoading(false);
+  loadUsers() {
+    if (this.props.isFetching) return;
+
+    API.getUsers(this.props.currentPage, this.props.pageSize, this.props.inputValue).then( data => {
+      this.props.setTotalCount(data.totalCount);
+      this.props.addUsers(data.items);
+      this.props.updateFetching(false);
     });
-    this.props.updateLoading(true);
+
+    this.props.updateFetching(true);
+  }
+
+  clearUsers() {
+    this.props.setCurrentPage(1);
+    this.props.setLastLoadedPage(0);
+    this.props.setUsers([]);
   }
 
   checkOnScroll = (target) => {
-    if (this.props.isLoading) return;
+    if (this.props.isFetching) return;
 
     const numberLastPage = Math.ceil(this.props.totalCount / this.props.pageSize);
     if (this.props.currentPage === numberLastPage) return;
@@ -30,18 +39,25 @@ class SearchUsersListContainer extends React.Component {
   }
 
   componentDidMount() {
+    this.loadUsers();
     this.props.setLastLoadedPage(this.props.currentPage);
-    this.getUsers();
   }
 
   componentDidUpdate() {
+    if (this.props.term !== this.props.inputValue) {
+      this.props.setTerm(this.props.inputValue);
+      this.clearUsers();
+    }
+
     if (this.props.currentPage > this.props.lastLoadedPage) {
+      this.loadUsers();
       this.props.setLastLoadedPage(this.props.currentPage);
-      this.getUsers();
     }
   }
 
   render() {
+    if (this.props.users.length === 0) return <></>;
+
     return (
       <SearchUserList users={this.props.users}
                       checkOnScroll={this.checkOnScroll}
@@ -59,11 +75,13 @@ let mapStateToProps = (state) => {
     totalCount: state.searchUsers.usersList.totalCount,
     currentPage: state.searchUsers.usersList.currentPage,
     lastLoadedPage: state.searchUsers.usersList.lastLoadedPage,
-    isLoading: state.searchUsers.usersList.isLoading,
+    isFetching: state.searchUsers.usersList.isFetching,
+    inputValue: state.searchUsers.input.value,
+    term: state.searchUsers.usersList.term,
   }
 }
 
 export default connect(
   mapStateToProps,
-  { updateUsersListHidden, setUsers, setCurrentPage, setTotalCount, setLastLoadedPage, updateLoading
+  { updateUsersListHidden, setUsers, addUsers, setCurrentPage, setTotalCount, setLastLoadedPage, updateFetching, setTerm
   })(SearchUsersListContainer);

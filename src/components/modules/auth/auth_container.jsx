@@ -1,29 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import * as axios from 'axios';
 import { withRouter } from 'react-router-dom'
 import Auth from './auth';
 import { setUserData, updateFetching, updateAuth } from '../../../redux/auth-reducer';
 import Preloader from '../../common/preloader';
+import API from '../../../api/api';
 
 class AuthContainer extends React.Component {
   getUserInfo = () => {
     if (this.props.isFetching) return;
 
-    axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-      withCredentials: true
-    })
-      .then( response => {
-        console.log();
-        if (response.data.resultCode === 0) {
-          this.props.setUserData(response.data.data.id, response.data.data.email, response.data.data.login);
-          this.props.updateAuth(true);
-        }
-
-        this.props.updateFetching(false);
-      }, error => {
-        console.log('error fetching');
-      });
+    API.auth().then( data => {
+      if (data.resultCode === 0) {
+        this.props.setUserData(data.data.id, data.data.email, data.data.login);
+        this.props.updateAuth(true);
+      }
+      this.props.updateFetching(false);
+    });
 
     this.props.updateFetching(true);
   }

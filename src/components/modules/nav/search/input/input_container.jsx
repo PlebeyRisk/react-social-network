@@ -6,7 +6,7 @@ let mapStateToProps = (state) => {
   return {
     focus: state.searchUsers.input.focus,
     value: state.searchUsers.input.value,
-    usersIsLoading: state.searchUsers.usersList.isLoading
+    usersisFetching: state.searchUsers.usersList.isFetching
   }
 }
 
