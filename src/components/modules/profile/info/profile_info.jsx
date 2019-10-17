@@ -81,8 +81,8 @@ const StyledNumber= styled.span`
   margin-right: 5px;
   font-weight: 600;
 `;
+
 const UserAvatar = (props) => {
-  console.log(defaultImage);
   return (
     <StyledUserAvatar>
       <img src={props.image} alt="user avatar" width="150" height="150"/>
@@ -91,29 +91,37 @@ const UserAvatar = (props) => {
 }
 
 const UserInfo = (props) => {
+  const {fullName, aboutMe, userId} = props.userInfo;
+
   return (
     <StyledUserInfo>
       <StyledInfoSection>
-        <StyledName>{props.name}</StyledName>
-        <StyledSubscribeBtn>Подписаться</StyledSubscribeBtn>
-        {/* <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
-        <StyledOptionsBtn>
-          <StyledOptionsBtnIcon/>
-        </StyledOptionsBtn> */}
+        <StyledName>{fullName}</StyledName>
+        {props.authUserId !== userId || !props.isAuth
+          ? !props.isFollow
+              ? <StyledSubscribeBtn onClick={props.follow}>Подписаться</StyledSubscribeBtn>
+              : <StyledSubscribeBtn onClick={props.unfollow}>Отписаться</StyledSubscribeBtn>
+          : <>
+              <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
+              <StyledOptionsBtn>
+                <StyledOptionsBtnIcon/>
+              </StyledOptionsBtn></>
+        }
       </StyledInfoSection>
       <StyledInfoSection>
         {/* <StyledNumber>20</StyledNumber> подписок */}
       </StyledInfoSection>
-      <StyledInfoSection>{props.aboutMe}</StyledInfoSection>
+      <StyledInfoSection>{aboutMe}</StyledInfoSection>
     </StyledUserInfo>
   );
 }
 
 const ProfileInfo = (props) => {
+  const {photos} = props.userInfo;
   return (
     <StyledProfileInfo>
-      <UserAvatar image={props.photos ? (props.photos.large ? props.photos.large : defaultImage) : defaultImage}/>
-      <UserInfo name={props.fullName} aboutMe={props.aboutMe}/>
+      <UserAvatar image={photos ? (photos.large ? photos.large : defaultImage) : defaultImage}/>
+      <UserInfo {...props}/>
     </StyledProfileInfo>
   );
 };

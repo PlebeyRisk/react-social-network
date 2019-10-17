@@ -19,7 +19,7 @@ const Profile = (props) => {
   return (
     <StyledProfile>
       <MainContainer>
-        <ProfileInfo {...props.userInfo}/>
+        <ProfileInfo {...props}/>
       </MainContainer>
     </StyledProfile>
   );

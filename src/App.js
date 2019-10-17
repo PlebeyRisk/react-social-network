@@ -6,6 +6,7 @@ import Main from './components/modules/main/main';
 import Explore from './components/modules/explore/explore';
 import Direct from './components/modules/direct/direct';
 import ProfileContainer from './components/modules/profile/profile_container';
+import AuthContainer from './components/modules/auth/auth_container';
 
 const StyledApp = styled.div`
   display: flex;
@@ -25,10 +26,11 @@ const App = () => {
     <StyledApp>
       <Nav/>
       <StyledWrapperContent>
-          <Route exact path="/" render={ () => <Main/> }/>
-          <Route path="/explore" render={ () => <Explore/> }/>
-          <Route path="/direct" render={ () => <Direct/> }/>
-          <Route path="/profile" render={ () => <ProfileContainer/> }/>
+          <Route exact path="/" component={AuthContainer}/>
+          <Route path="/explore" component={Explore}/>
+          <Route path="/direct" component={Direct}/>
+          <Route path="/profile/:userId?" component={ProfileContainer}/>
+          <Route path="/auth" component={AuthContainer}/>
       </StyledWrapperContent>
     </StyledApp>
   );

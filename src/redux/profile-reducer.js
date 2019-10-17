@@ -1,9 +1,11 @@
 const SET_USER_INFO = 'SET_USER_INFO';
 const UPDATE_FETCHING = 'UPDATE_FETCHING';
+const UPDATE_FOLLOW = 'UPDATE_FOLLOW';
 
 const initialState = {
   userInfo: null,
-  isFetching: false
+  isFetching: false,
+  isFollow: false
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -23,6 +25,13 @@ const profileReducer = (state = initialState, action) => {
       };
       return stateCopy;
     }
+    case UPDATE_FOLLOW: {
+      let stateCopy = {
+        ...state,
+        isFollow: action.isFollow
+      };
+      return stateCopy;
+    }
     default:
       return state;
   };
@@ -30,5 +39,6 @@ const profileReducer = (state = initialState, action) => {
 
 export const setUserInfo = (userInfo) => ({ type: SET_USER_INFO, userInfo});
 export const updateFetching = (isFetching) => ({ type: UPDATE_FETCHING, isFetching});
+export const updateFollow = (isFollow) => ({ type: UPDATE_FOLLOW, isFollow});
 
 export default profileReducer;

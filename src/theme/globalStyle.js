@@ -56,6 +56,24 @@ const GlobalStyle = createGlobalStyle`
       opacity: 0.6;
     }
   }
+
+  input, textarea {
+    &::-webkit-input-placeholder {
+      color: ${colors.textThree};
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+      color: ${colors.textThree};
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+      color: ${colors.textThree};
+    }
+
+    &:-ms-input-placeholder {
+      color: ${colors.textThree};
+    }
+  }
 `
 
 export default GlobalStyle;
