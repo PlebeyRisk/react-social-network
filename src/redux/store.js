@@ -1,8 +1,9 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import directReducer from "./direct-reducer";
 import searchUsersReducer from "./search-users-reducer";
 import profileReducer from "./profile-reducer";
 import authReducer from "./auth-reducer";
+import thunkMiddleware from "redux-thunk";
 
 let reducers = combineReducers({
   direct: directReducer,
@@ -11,7 +12,7 @@ let reducers = combineReducers({
   auth: authReducer
 });
 
-let store = createStore(reducers);
+let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = store;
 

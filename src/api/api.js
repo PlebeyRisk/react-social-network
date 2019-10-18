@@ -7,27 +7,27 @@ const instance = axios.create({
 });
 
 const getUsers = (currentPage = 1, pageSize = 10, name = '') => {
-  return instance.get(`users?page=${currentPage}&count=${pageSize}&term=${name}`).then(response => response.data, () => console.log('error fetching getUsers()'));
+  return instance.get(`users?page=${currentPage}&count=${pageSize}&term=${name}`).then(response => response.data, (error) => console.log('error fetching getUsers(): ' + error));
 }
 
 const auth = () => {
-  return instance.get(`auth/me`).then(response => response.data, () => console.log('error fetching auth()'));
+  return instance.get(`auth/me`).then(response => response.data, (error) => console.log('error fetching auth(): ' + error));
 }
 
 const getUserInfo = (userId = 2) => {
-  return instance.get(`profile/${userId}`).then(response => response.data, () => console.log('error fetching getUserInfo()'));
+  return instance.get(`profile/${userId}`).then(response => response.data, (error) => console.log('error fetching getUserInfo(): ' + error));
 }
 
 const isFollow = (userId = 2) => {
-  return instance.get(`follow/${userId}`).then(response => response.data, () => console.log('error fetching isFollow()'));
+  return instance.get(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching isFollow(): ' + error));
 }
 
 const postFollow = (userId = 2) => {
-  return instance.post(`follow/${userId}`).then(response => response.data, () => console.log('error fetching postFollow()'));
+  return instance.post(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching postFollow(): ' + error));
 }
 
 const deleteFollow = (userId = 2) => {
-  return instance.delete(`follow/${userId}`).then(response => response.data, () => console.log('error fetching deleteFollow()'));
+  return instance.delete(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching deleteFollow(): ' + error));
 }
 
 const API = {

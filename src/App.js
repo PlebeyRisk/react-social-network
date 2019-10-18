@@ -4,9 +4,9 @@ import { Route } from 'react-router-dom';
 import Nav from './components/modules/nav/nav';
 import Main from './components/modules/main/main';
 import Explore from './components/modules/explore/explore';
-import Direct from './components/modules/direct/direct';
+import DirectContainer from './components/modules/direct/direct_container';
 import ProfileContainer from './components/modules/profile/profile_container';
-import AuthContainer from './components/modules/auth/auth_container';
+import LoginContainer from './components/modules/login/login_container';
 
 const StyledApp = styled.div`
   display: flex;
@@ -26,11 +26,11 @@ const App = () => {
     <StyledApp>
       <Nav/>
       <StyledWrapperContent>
-          <Route exact path="/" component={AuthContainer}/>
+          <Route exact path="/" component={LoginContainer}/>
           <Route path="/explore" component={Explore}/>
-          <Route path="/direct" component={Direct}/>
+          <Route path="/direct" component={DirectContainer}/>
           <Route path="/profile/:userId?" component={ProfileContainer}/>
-          <Route path="/auth" component={AuthContainer}/>
+          {/* <Route path="/auth" component={AuthContainer}/> */}
       </StyledWrapperContent>
     </StyledApp>
   );

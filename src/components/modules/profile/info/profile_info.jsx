@@ -92,15 +92,14 @@ const UserAvatar = (props) => {
 
 const UserInfo = (props) => {
   const {fullName, aboutMe, userId} = props.userInfo;
-
   return (
     <StyledUserInfo>
       <StyledInfoSection>
         <StyledName>{fullName}</StyledName>
         {props.authUserId !== userId || !props.isAuth
           ? !props.isFollow
-              ? <StyledSubscribeBtn onClick={props.follow}>Подписаться</StyledSubscribeBtn>
-              : <StyledSubscribeBtn onClick={props.unfollow}>Отписаться</StyledSubscribeBtn>
+              ? <StyledSubscribeBtn onClick={props.follow} disabled={props.isFollowingInProgress}>Подписаться</StyledSubscribeBtn>
+              : <StyledSubscribeBtn onClick={props.unfollow} disabled={props.isFollowingInProgress}>Отписаться</StyledSubscribeBtn>
           : <>
               <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
               <StyledOptionsBtn>

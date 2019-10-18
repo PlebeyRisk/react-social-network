@@ -13,7 +13,7 @@ const MainContainer = styled(Container)`
 
 const Profile = (props) => {
   if (!props.userInfo || props.isFetching) {
-    return <Preloader/>
+    return <Preloader/>;
   }
 
   return (

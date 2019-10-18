@@ -1,5 +1,7 @@
+import API from "../api/api";
+
 const SET_USER_DATA = 'SET_USER_DATA';
-const UPDATE_FETCHING = 'UPDATE_FETCHING'
+const UPDATE_FETCHING = 'AUTH_UPDATE_FETCHING'
 const UPDATE_AUTH = 'UPDATE_AUTH'
 
 const initialState = {
@@ -42,5 +44,19 @@ const authReducer = (state = initialState, action) => {
 export const setUserData = (userId, email, login) => ({ type: SET_USER_DATA, data:{ userId, email, login }});
 export const updateFetching = (isFetching) => ({ type: UPDATE_FETCHING, isFetching});
 export const updateAuth = (isAuth) => ({ type: UPDATE_AUTH, isAuth});
+
+export const auth = () => {
+  return (dispatch) => {
+    dispatch(updateFetching(true));
+
+    API.auth().then( data => {
+      dispatch(updateFetching(false));
+      if (data && data.resultCode === 0) {
+        dispatch(setUserData(data.data.id, data.data.email, data.data.login));
+        dispatch(updateAuth(true));
+      }
+    });
+  };
+};
 
 export default authReducer;

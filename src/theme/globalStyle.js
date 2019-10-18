@@ -55,6 +55,11 @@ const GlobalStyle = createGlobalStyle`
     &:active {
       opacity: 0.6;
     }
+
+    &:disabled {
+      opacity: 0.8;
+      cursor: default;
+    }
   }
 
   input, textarea {

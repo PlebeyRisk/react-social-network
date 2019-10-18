@@ -1,3 +1,5 @@
+import API from "../api/api";
+
 const UPDATE_COVER_HIDDEN = 'UPDATE_SEARCH_COVER_HIDDEN';
 const UPDATE_INPUT_FOCUS = 'UPDATE_SEARCH_INPUT_FOCUS';
 const UPDATE_INPUT_VALUE = 'UPDATE_SEARCH_INPUT_VALUE';
@@ -7,7 +9,7 @@ const ADD_USERS = 'ADD_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT';
 const SET_LAST_LOADED_PAGE = 'SET_LAST_LOADED_PAGE';
-const UPDATE_FETCHING = 'UPDATE_FETCHING';
+const UPDATE_FETCHING = 'SEARCH_USERS_UPDATE_FETCHING';
 const SET_TERM = 'SET_TERM';
 
 const initialState = {
@@ -134,5 +136,29 @@ export const setTotalCount = (totalCount) => ({ type: SET_TOTAL_COUNT, totalCoun
 export const setLastLoadedPage = (lastLoadedPage) => ({ type: SET_LAST_LOADED_PAGE, lastLoadedPage });
 export const updateFetching = (isFetching) => ({ type: UPDATE_FETCHING, isFetching });
 export const setTerm = (term) => ({ type: SET_TERM, term });
+
+export const getUsers = (currentPage, pageSize, inputValue) => {
+  return (dispatch) => {
+    dispatch(updateFetching(true));
+    dispatch(setLastLoadedPage(currentPage));
+
+    API.getUsers(currentPage, pageSize, inputValue).then( data => {
+      dispatch(updateFetching(false));
+      if (!data) return;
+      dispatch(setTotalCount(data.totalCount));
+      dispatch(addUsers(data.items));
+    }, (error) => {
+      dispatch(setLastLoadedPage(currentPage - 1));
+    });
+  };
+};
+
+export const clearUsers = () => {
+  return (dispatch) => {
+    dispatch(setCurrentPage(1));
+    dispatch(setLastLoadedPage(0));
+    dispatch(setUsers([]));
+  };
+};
 
 export default searchUsersReducer;

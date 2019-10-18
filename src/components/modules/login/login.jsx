@@ -4,7 +4,7 @@ import Container from '../../common/container';
 import { colors } from '../../../theme/globalStyle';
 import logoTextIcon from '../../../img/logo-text.svg'
 
-const StyledAuth = styled.main`
+const StyledLogin = styled.main`
 `;
 
 const MainContainer = styled(Container)`
@@ -54,9 +54,9 @@ const StyledButton = styled.button`
 `
 
 
-const Auth = (props) => {
+const Login = (props) => {
   return (
-    <StyledAuth>
+    <StyledLogin>
       <MainContainer>
         <StyledBox>
           <StyledLogoText>
@@ -69,8 +69,8 @@ const Auth = (props) => {
           </StyledForm>
         </StyledBox>
       </MainContainer>
-    </StyledAuth>
+    </StyledLogin>
   );
 }
 
-export default Auth;
+export default Login;
