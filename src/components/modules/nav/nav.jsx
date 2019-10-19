@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import Container from '../../common/container';
 import { colors } from '../../../theme/globalStyle';
@@ -11,8 +11,9 @@ const StyledNav = styled.nav`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: ${ colors.light };
-  border-bottom: 1px solid ${ colors.border };
+  background-color: ${colors.light};
+  border-bottom: 1px solid ${colors.border};
+  z-index: 2;
 `;
 
 const NavContainer = styled(Container)`
@@ -27,12 +28,12 @@ const Nav = () => {
   return (
     <StyledNav>
       <NavContainer>
-        <Logo/>
-        <Search/>
-        <NavButtons/>
+        <Logo />
+        <Search />
+        <NavButtons />
       </NavContainer>
     </StyledNav>
   );
-}
+};
 
 export default Nav;

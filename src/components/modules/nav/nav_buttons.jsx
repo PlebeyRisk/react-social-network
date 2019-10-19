@@ -50,8 +50,8 @@ const NavButtons = () => {
   return (
     <StyledNavButtons>
       <StyledButtons>
-        <Button to="/explore/" src={exploreIcon}/>
-        <Button to="#" src={heartIcon}/>
+        {/* <Button to="/explore/" src={exploreIcon}/> */}
+        {/* <Button to="#" src={heartIcon}/> */}
         <Button to="/direct/" src={directIcon}/>
         <Button to="/profile/" src={profileIcon}/>
       </StyledButtons>

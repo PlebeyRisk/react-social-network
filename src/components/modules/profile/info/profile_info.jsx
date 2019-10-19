@@ -1,8 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import defaultImage from '../../../../img/users/ava-default.jpg'
-import optionsIcon from '../../../../img/options.svg'
+import React from 'react';
+import styled from 'styled-components';
+import defaultImage from '../../../../img/users/ava-default.jpg';
+import optionsIcon from '../../../../img/options.svg';
 import { colors } from '../../../../theme/globalStyle';
+import UserStatus from './user_status/user_status';
 
 const StyledProfileInfo = styled.header`
   display: flex;
@@ -10,6 +11,7 @@ const StyledProfileInfo = styled.header`
 `;
 
 const StyledUserAvatar = styled.div`
+  flex: none;
   margin: 0 80px 0 110px;
   width: 150px;
   height: 150px;
@@ -18,9 +20,10 @@ const StyledUserAvatar = styled.div`
 `;
 
 const StyledUserInfo = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  min-width: 0;
 `;
 
 const StyledInfoSection = styled.div`
@@ -41,7 +44,7 @@ const StyledName = styled.span`
 `;
 
 const StyledEditProfileBtn = styled.button.attrs({
-  type: 'button'
+  type: 'button',
 })`
   margin-right: 10px;
   padding: 5px 9px;
@@ -52,14 +55,14 @@ const StyledEditProfileBtn = styled.button.attrs({
 `;
 
 const StyledOptionsBtn = styled.button.attrs({
-  type: 'button'
+  type: 'button',
 })`
   background-color: transparent;
   border: none;
 `;
 
 const StyledSubscribeBtn = styled.button.attrs({
-  type: 'button'
+  type: 'button',
 })`
   padding: 0 24px;
   background-color: ${colors.secondary};
@@ -77,50 +80,64 @@ const StyledOptionsBtnIcon = styled.span`
   background-size: cover;
 `;
 
-const StyledNumber= styled.span`
+const StyledNumber = styled.span`
   margin-right: 5px;
   font-weight: 600;
 `;
 
-const UserAvatar = (props) => {
+const UserAvatar = props => {
   return (
     <StyledUserAvatar>
-      <img src={props.image} alt="user avatar" width="150" height="150"/>
+      <img src={props.image} alt="user avatar" width="150" height="150" />
     </StyledUserAvatar>
   );
-}
+};
 
-const UserInfo = (props) => {
-  const {fullName, aboutMe, userId} = props.userInfo;
+const UserInfo = props => {
+  const { fullName, aboutMe, userId } = props.userInfo;
   return (
     <StyledUserInfo>
       <StyledInfoSection>
         <StyledName>{fullName}</StyledName>
-        {props.authUserId !== userId || !props.isAuth
-          ? !props.isFollow
-              ? <StyledSubscribeBtn onClick={props.follow} disabled={props.isFollowingInProgress}>Подписаться</StyledSubscribeBtn>
-              : <StyledSubscribeBtn onClick={props.unfollow} disabled={props.isFollowingInProgress}>Отписаться</StyledSubscribeBtn>
-          : <>
-              <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
-              <StyledOptionsBtn>
-                <StyledOptionsBtnIcon/>
-              </StyledOptionsBtn></>
-        }
+        {props.authUserId !== userId ? (
+          !props.isFollow ? (
+            <StyledSubscribeBtn onClick={props.follow} disabled={props.isFollowingInProgress}>
+              Подписаться
+            </StyledSubscribeBtn>
+          ) : (
+            <StyledSubscribeBtn onClick={props.unfollow} disabled={props.isFollowingInProgress}>
+              Отписаться
+            </StyledSubscribeBtn>
+          )
+        ) : (
+          <>
+            <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
+            <StyledOptionsBtn>
+              <StyledOptionsBtnIcon />
+            </StyledOptionsBtn>
+          </>
+        )}
       </StyledInfoSection>
       <StyledInfoSection>
-        {/* <StyledNumber>20</StyledNumber> подписок */}
+        <UserStatus
+          textStatus={props.textStatus}
+          isAuthUser={props.authUserId === props.userInfo.userId}
+          setTextStatus={props.setTextStatus}
+          isUpdateStatusInProgress={props.isUpdateStatusInProgress}
+        />
       </StyledInfoSection>
+      <StyledInfoSection>{/* <StyledNumber>20</StyledNumber> подписок */}</StyledInfoSection>
       <StyledInfoSection>{aboutMe}</StyledInfoSection>
     </StyledUserInfo>
   );
-}
+};
 
-const ProfileInfo = (props) => {
-  const {photos} = props.userInfo;
+const ProfileInfo = props => {
+  const { photos } = props.userInfo;
   return (
     <StyledProfileInfo>
-      <UserAvatar image={photos ? (photos.large ? photos.large : defaultImage) : defaultImage}/>
-      <UserInfo {...props}/>
+      <UserAvatar image={photos ? (photos.large ? photos.large : defaultImage) : defaultImage} />
+      <UserInfo {...props} />
     </StyledProfileInfo>
   );
 };

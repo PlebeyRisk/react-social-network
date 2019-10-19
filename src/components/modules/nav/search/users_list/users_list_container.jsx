@@ -1,6 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
-import { updateUsersListHidden, setCurrentPage, setTerm, getUsers, clearUsers } from '../../../../../redux/search-users-reducer';
+import {
+  updateUsersListHidden,
+  setCurrentPage,
+  setTerm,
+  getUsers,
+  clearUsers,
+} from '../../../../../redux/search-users-reducer';
 import SearchUserList from './users_list';
 
 class SearchUsersListContainer extends React.Component {
@@ -9,7 +15,7 @@ class SearchUsersListContainer extends React.Component {
     this.props.getUsers(this.props.currentPage, this.props.pageSize, this.props.inputValue);
   }
 
-  checkOnScroll = (target) => {
+  checkOnScroll = target => {
     if (this.props.isFetching) return;
 
     const numberLastPage = Math.ceil(this.props.totalCount / this.props.pageSize);
@@ -22,7 +28,7 @@ class SearchUsersListContainer extends React.Component {
       const newCurrentPage = this.props.currentPage + 1;
       this.props.setCurrentPage(newCurrentPage);
     }
-  }
+  };
 
   componentDidMount() {
     this.loadUsers();
@@ -43,15 +49,16 @@ class SearchUsersListContainer extends React.Component {
     if (this.props.users.length === 0) return <></>;
 
     return (
-      <SearchUserList users={this.props.users}
-                      checkOnScroll={this.checkOnScroll}
-                      hidden={this.props.hidden}
-                      />
+      <SearchUserList
+        users={this.props.users}
+        checkOnScroll={this.checkOnScroll}
+        hidden={this.props.hidden}
+      />
     );
   }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
   return {
     users: state.searchUsers.usersList.users,
     hidden: state.searchUsers.usersList.hidden,
@@ -62,11 +69,10 @@ let mapStateToProps = (state) => {
     isFetching: state.searchUsers.usersList.isFetching,
     inputValue: state.searchUsers.input.value,
     term: state.searchUsers.usersList.term,
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
-  { updateUsersListHidden, setCurrentPage, setTerm,
-    getUsers, clearUsers,
-  })(SearchUsersListContainer);
+  { updateUsersListHidden, setCurrentPage, setTerm, getUsers, clearUsers },
+)(SearchUsersListContainer);

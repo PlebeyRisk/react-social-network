@@ -26,11 +26,11 @@ const App = () => {
     <StyledApp>
       <Nav/>
       <StyledWrapperContent>
-          <Route exact path="/" component={LoginContainer}/>
+          <Route exact path="/" component={Main}/>
           <Route path="/explore" component={Explore}/>
           <Route path="/direct" component={DirectContainer}/>
           <Route path="/profile/:userId?" component={ProfileContainer}/>
-          {/* <Route path="/auth" component={AuthContainer}/> */}
+          <Route path="/login" component={LoginContainer}/>
       </StyledWrapperContent>
     </StyledApp>
   );

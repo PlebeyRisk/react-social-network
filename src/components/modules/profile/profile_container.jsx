@@ -1,22 +1,24 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
 import Profile from './profile';
-import { loadUser, follow, unfollow } from '../../../redux/profile-reducer';
-import { withRouter } from 'react-router-dom'
+import { loadUser, follow, unfollow, setTextStatus } from '../../../redux/profile-reducer';
+import { withRouter } from 'react-router-dom';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 class ProfileContainer extends React.Component {
   loadUserInfo = () => {
     if (this.props.isFetching) return;
     this.props.loadUser(this.props.match.params.userId || this.props.authUserId || 2);
-  }
+  };
 
   follow = () => {
     this.props.follow(this.props.userInfo.userId);
-  }
+  };
 
   unfollow = () => {
     this.props.unfollow(this.props.userInfo.userId);
-  }
+  };
 
   componentDidMount() {
     this.loadUserInfo();
@@ -33,11 +35,11 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
-    return <Profile {...this.props} follow={this.follow} unfollow={this.unfollow}/>;
+    return <Profile {...this.props} follow={this.follow} unfollow={this.unfollow} />;
   }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = state => {
   return {
     userInfo: state.profile.userInfo,
     isFetching: state.profile.isFetching,
@@ -46,10 +48,23 @@ let mapStateToProps = (state) => {
     isAuth: state.auth.isAuth,
     isFollowingInProgress: state.profile.isFollowingInProgress,
     oldUserId: state.profile.oldUserId,
-  }
-}
+    textStatus: state.profile.textStatus,
+    isUpdateStatusInProgress: state.profile.isUpdateStatusInProgress,
+  };
+};
 
-export default connect(
-  mapStateToProps,
-  { loadUser, follow, unfollow
-  })(withRouter(ProfileContainer));
+let mapDispatchToProps = {
+  loadUser,
+  follow,
+  unfollow,
+  setTextStatus,
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withRouter,
+  withAuthRedirect,
+)(ProfileContainer);

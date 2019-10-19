@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { colors } from '../../../theme/globalStyle';
 
-const StyledUser = styled(NavLink).attrs((props) => ({
-  to: props.link
+const StyledUser = styled(NavLink).attrs(props => ({
+  to: props.link,
 }))`
   display: flex;
   align-items: center;
@@ -12,7 +12,7 @@ const StyledUser = styled(NavLink).attrs((props) => ({
   width: 100%;
   text-decoration: none;
 
-  &:hover{
+  &:hover {
     background-color: rgba(0, 0, 0, 0.03);
   }
 `;
@@ -48,24 +48,24 @@ const StyledUserText = styled(StyledTextOverflow)`
   color: ${colors.textThree};
 `;
 
-const UserAvatar = (props) => {
+const UserAvatar = props => {
   return (
     <StyledUserAvatar size={props.size}>
-      <img src={props.image} alt="user avatar" width={props.size} height={props.size}/>
+      <img src={props.image} alt="user avatar" width={props.size} height={props.size} />
     </StyledUserAvatar>
   );
-}
+};
 
-const User = (props) => {
+const User = props => {
   return (
     <StyledUser link={`/profile/` + props.id}>
-      <UserAvatar image={props.image} size={props.size || 50}/>
+      <UserAvatar image={props.image} size={props.size || 50} />
       <StyledTextWrap>
         <StyledUserName>{props.name}</StyledUserName>
         <StyledUserText>{props.text}</StyledUserText>
       </StyledTextWrap>
     </StyledUser>
   );
-}
+};
 
 export default User;

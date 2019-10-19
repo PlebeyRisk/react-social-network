@@ -1,5 +1,5 @@
 import Messages from './messages'
-import { updateNewMessage, sendMessage } from '../../../../redux/direct-reducer';
+import { sendMessage, updateNewMessage } from '../../../../redux/direct-reducer';
 import { connect } from 'react-redux';
 
 let mapStateToProps = (state) => {
