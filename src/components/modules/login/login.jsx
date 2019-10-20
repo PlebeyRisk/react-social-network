@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Container from '../../common/container';
 import { colors } from '../../../theme/globalStyle';
 import logoTextIcon from '../../../img/logo-text.svg';
-import TextInput from '../../common/textinput';
+import LoginForm from './login_form/login_form';
 
 const StyledLogin = styled.main``;
 
@@ -26,28 +26,6 @@ const StyledLogoText = styled.div`
   margin-bottom: 12px;
   width: 175px;
 `;
-const StyledForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 270px;
-`;
-const StyledInput = styled(TextInput)`
-  margin-bottom: 6px;
-  width: 100%;
-  background-color: ${colors.gray};
-`;
-
-const StyledButton = styled.button`
-  margin-top: 10px;
-  padding: 6px;
-  width: 100%;
-  border: none;
-  border-radius: 4px;
-  background-color: ${colors.secondary};
-  font-weight: 600;
-  color: ${colors.light};
-`;
 
 const Login = props => {
   return (
@@ -57,11 +35,7 @@ const Login = props => {
           <StyledLogoText>
             <img src={logoTextIcon} alt="logo text" width="175" />
           </StyledLogoText>
-          <StyledForm>
-            <StyledInput type="email" placeholder="Email" />
-            <StyledInput type="password" placeholder="Пароль" />
-            <StyledButton>Войти</StyledButton>
-          </StyledForm>
+          <LoginForm {...props} />
         </StyledBox>
       </MainContainer>
     </StyledLogin>

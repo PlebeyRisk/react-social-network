@@ -1,4 +1,7 @@
-import API from "../api/api";
+import {
+  followAPI,
+  profileAPI
+} from '../api/api';
 
 const SET_USER_INFO = 'SET_USER_INFO';
 const UPDATE_FETCHING = 'PROFILE_UPDATE_FETCHING';
@@ -19,131 +22,128 @@ const initialState = {
 };
 
 const profileReducer = (state = initialState, action) => {
-
   switch (action.type) {
     case SET_USER_INFO: {
       let stateCopy = {
         ...state,
-        userInfo: action.userInfo
+        userInfo: action.userInfo,
       };
       return stateCopy;
     }
     case UPDATE_FETCHING: {
       let stateCopy = {
         ...state,
-        isFetching: action.isFetching
+        isFetching: action.isFetching,
       };
       return stateCopy;
     }
     case UPDATE_FOLLOW: {
       let stateCopy = {
         ...state,
-        isFollow: action.isFollow
+        isFollow: action.isFollow,
       };
       return stateCopy;
     }
     case UPDATE_FOLLOWING_PROGRESS: {
       let stateCopy = {
         ...state,
-        isFollowingInProgress: action.progress
+        isFollowingInProgress: action.progress,
       };
       return stateCopy;
     }
     case UPDATE_OLD_USER_ID: {
       let stateCopy = {
         ...state,
-        oldUserId: action.oldUserId
+        oldUserId: action.oldUserId,
       };
       return stateCopy;
     }
     case UPDATE_TEXT_STATUS: {
       let stateCopy = {
         ...state,
-        textStatus: action.status
+        textStatus: action.status,
       };
       return stateCopy;
     }
     case UPDATE_STATUS_PROGRESS: {
       let stateCopy = {
         ...state,
-        isUpdateStatusInProgress: action.progress
+        isUpdateStatusInProgress: action.progress,
       };
       return stateCopy;
     }
     default:
       return state;
-  };
-}
+  }
+};
 
-export const setUserInfo = (userInfo) => ({
+export const setUserInfo = userInfo => ({
   type: SET_USER_INFO,
-  userInfo
+  userInfo,
 });
-export const updateFetching = (isFetching) => ({
+export const updateFetching = isFetching => ({
   type: UPDATE_FETCHING,
-  isFetching
+  isFetching,
 });
-export const updateFollow = (isFollow) => ({
+export const updateFollow = isFollow => ({
   type: UPDATE_FOLLOW,
-  isFollow
+  isFollow,
 });
-export const updateFollowingProgress = (progress) => ({
+export const updateFollowingProgress = progress => ({
   type: UPDATE_FOLLOWING_PROGRESS,
-  progress
+  progress,
 });
-export const updateOldUserId = (oldUserId) => ({
+export const updateOldUserId = oldUserId => ({
   type: UPDATE_OLD_USER_ID,
-  oldUserId
+  oldUserId,
 });
-export const updateTextStatus = (status) => ({
+export const updateTextStatus = status => ({
   type: UPDATE_TEXT_STATUS,
-  status
+  status,
 });
-export const updateStatusProgress = (progress) => ({
+export const updateStatusProgress = progress => ({
   type: UPDATE_STATUS_PROGRESS,
-  progress
+  progress,
 });
 
-export const loadUser = (userId) => {
-  return (dispatch) => {
+export const loadUser = userId => {
+  return dispatch => {
     const loadFollowStatus = () => {
-
-      API.isFollow(userId).then(data => {
+      followAPI.isFollow(userId).then(data => {
         if (data === undefined) return;
 
         dispatch(updateFollow(data));
       });
-    }
+    };
 
     const loadTextStatus = () => {
-      API.getTextStatus(userId).then(data => {
+      profileAPI.getTextStatus(userId).then(data => {
         if (data === undefined) return;
 
         dispatch(updateTextStatus(data));
       });
-    }
+    };
 
     loadFollowStatus();
     loadTextStatus();
 
     dispatch(updateFetching(true));
 
-    API.getUserInfo(userId).then(data => {
+    profileAPI.getUserInfo(userId).then(data => {
       dispatch(updateFetching(false));
 
       if (!data) return;
 
       dispatch(setUserInfo(data));
-
     });
   };
 };
 
-export const follow = (userId) => {
-  return (dispatch) => {
+export const follow = userId => {
+  return dispatch => {
     dispatch(updateFollowingProgress(true));
 
-    API.postFollow(userId).then(data => {
+    followAPI.postFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
@@ -153,11 +153,11 @@ export const follow = (userId) => {
   };
 };
 
-export const unfollow = (userId) => {
-  return (dispatch) => {
+export const unfollow = userId => {
+  return dispatch => {
     dispatch(updateFollowingProgress(true));
 
-    API.deleteFollow(userId).then(data => {
+    followAPI.deleteFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
@@ -167,16 +167,16 @@ export const unfollow = (userId) => {
   };
 };
 
-export const setTextStatus = (status) => {
-  return (dispatch) => {
+export const setTextStatus = status => {
+  return dispatch => {
     dispatch(updateStatusProgress(true));
-    API.updateStatus(status).then(data => {
+    profileAPI.updateStatus(status).then(data => {
+      dispatch(updateStatusProgress(false));
       if (data && data.resultCode === 0) {
         dispatch(updateTextStatus(status));
       }
-      dispatch(updateStatusProgress(false));
     });
-  }
+  };
 };
 
 export default profileReducer;

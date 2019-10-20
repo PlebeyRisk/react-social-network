@@ -42,15 +42,43 @@ const updateStatus = (status) => {
   }).then(response => response.data, (error) => console.log('error fetching updateStatus(): ' + error));
 }
 
-const API = {
+const login = (email, password, rememberMe, captcha) => {
+  return instance.post(`/auth/login/`, {
+    email,
+    password,
+    rememberMe,
+    captcha
+  }).then(response => response.data, (error) => console.log('error fetching login(): ' + error));
+}
+
+const logout = () => {
+  return instance.post(`auth/logout`).then(response => response.data, (error) => console.log('error fetching logout(): ' + error));
+}
+
+const getCaptcha = () => {
+  return instance.get(`security/get-captcha-url`).then(response => response.data, (error) => console.log('error fetching getCaptcha(): ' + error));
+}
+
+export const usersAPI = {
   getUsers,
-  auth,
+};
+
+export const profileAPI = {
   getUserInfo,
-  isFollow,
-  postFollow,
-  deleteFollow,
   getTextStatus,
   updateStatus
 };
 
-export default API;
+export const authAPI = {
+  auth,
+  login,
+  logout,
+  getCaptcha
+};
+
+
+export const followAPI = {
+  isFollow,
+  postFollow,
+  deleteFollow
+};

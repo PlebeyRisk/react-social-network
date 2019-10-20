@@ -5,6 +5,7 @@ import { loadUser, follow, unfollow, setTextStatus } from '../../../redux/profil
 import { withRouter } from 'react-router-dom';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
+import { logout } from '../../../redux/auth-reducer';
 
 class ProfileContainer extends React.Component {
   loadUserInfo = () => {
@@ -58,6 +59,7 @@ let mapDispatchToProps = {
   follow,
   unfollow,
   setTextStatus,
+  logout,
 };
 
 export default compose(

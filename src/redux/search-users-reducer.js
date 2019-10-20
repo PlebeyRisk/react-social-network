@@ -1,4 +1,6 @@
-import API from "../api/api";
+import {
+  usersAPI
+} from "../api/api";
 
 const UPDATE_COVER_HIDDEN = 'UPDATE_SEARCH_COVER_HIDDEN';
 const UPDATE_INPUT_FOCUS = 'UPDATE_SEARCH_INPUT_FOCUS';
@@ -37,7 +39,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case UPDATE_COVER_HIDDEN: {
       let stateCopy = {
         ...state,
-        cover: { ...state.cover }
+        cover: {
+          ...state.cover
+        }
       };
       stateCopy.cover.hidden = action.hidden;
       return stateCopy;
@@ -45,7 +49,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case UPDATE_INPUT_FOCUS: {
       let stateCopy = {
         ...state,
-        input: { ...state.input }
+        input: {
+          ...state.input
+        }
       };
       stateCopy.input.focus = action.focus;
       return stateCopy;
@@ -53,7 +59,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case UPDATE_INPUT_VALUE: {
       let stateCopy = {
         ...state,
-        input: { ...state.input }
+        input: {
+          ...state.input
+        }
       };
       stateCopy.input.value = action.value;
       return stateCopy;
@@ -61,7 +69,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case UPDATE_USERSLIST_HIDDEN: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList }
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.hidden = action.hidden;
       return stateCopy;
@@ -69,21 +79,29 @@ const searchUsersReducer = (state = initialState, action) => {
     case SET_USERS: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList, users: [...action.users]}
+        usersList: {
+          ...state.usersList,
+          users: [...action.users]
+        }
       };
       return stateCopy;
     }
     case ADD_USERS: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList, users: [...state.usersList.users, ...action.users]}
+        usersList: {
+          ...state.usersList,
+          users: [...state.usersList.users, ...action.users]
+        }
       };
       return stateCopy;
     }
     case SET_CURRENT_PAGE: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList}
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.currentPage = action.currentPage;
       return stateCopy;
@@ -91,7 +109,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case SET_TOTAL_COUNT: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList}
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.totalCount = action.totalCount;
       return stateCopy;
@@ -99,7 +119,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case SET_LAST_LOADED_PAGE: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList}
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.lastLoadedPage = action.lastLoadedPage;
       return stateCopy;
@@ -107,7 +129,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case UPDATE_FETCHING: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList}
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.isFetching = action.isFetching;
       return stateCopy;
@@ -115,7 +139,9 @@ const searchUsersReducer = (state = initialState, action) => {
     case SET_TERM: {
       let stateCopy = {
         ...state,
-        usersList: { ...state.usersList}
+        usersList: {
+          ...state.usersList
+        }
       };
       stateCopy.usersList.term = action.term;
       return stateCopy;
@@ -125,24 +151,57 @@ const searchUsersReducer = (state = initialState, action) => {
   }
 }
 
-export const updateCoverHidden = (hidden) => ({ type: UPDATE_COVER_HIDDEN, hidden });
-export const updateInputFocus = (focus) => ({ type: UPDATE_INPUT_FOCUS, focus });
-export const updateInputValue = (value) => ({ type: UPDATE_INPUT_VALUE, value });
-export const updateUsersListHidden = (hidden) => ({ type: UPDATE_USERSLIST_HIDDEN, hidden });
-export const setUsers = (users) => ({ type: SET_USERS, users: users });
-export const addUsers = (users) => ({ type: ADD_USERS, users: users });
-export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
-export const setTotalCount = (totalCount) => ({ type: SET_TOTAL_COUNT, totalCount });
-export const setLastLoadedPage = (lastLoadedPage) => ({ type: SET_LAST_LOADED_PAGE, lastLoadedPage });
-export const updateFetching = (isFetching) => ({ type: UPDATE_FETCHING, isFetching });
-export const setTerm = (term) => ({ type: SET_TERM, term });
+export const updateCoverHidden = (hidden) => ({
+  type: UPDATE_COVER_HIDDEN,
+  hidden
+});
+export const updateInputFocus = (focus) => ({
+  type: UPDATE_INPUT_FOCUS,
+  focus
+});
+export const updateInputValue = (value) => ({
+  type: UPDATE_INPUT_VALUE,
+  value
+});
+export const updateUsersListHidden = (hidden) => ({
+  type: UPDATE_USERSLIST_HIDDEN,
+  hidden
+});
+export const setUsers = (users) => ({
+  type: SET_USERS,
+  users: users
+});
+export const addUsers = (users) => ({
+  type: ADD_USERS,
+  users: users
+});
+export const setCurrentPage = (currentPage) => ({
+  type: SET_CURRENT_PAGE,
+  currentPage
+});
+export const setTotalCount = (totalCount) => ({
+  type: SET_TOTAL_COUNT,
+  totalCount
+});
+export const setLastLoadedPage = (lastLoadedPage) => ({
+  type: SET_LAST_LOADED_PAGE,
+  lastLoadedPage
+});
+export const updateFetching = (isFetching) => ({
+  type: UPDATE_FETCHING,
+  isFetching
+});
+export const setTerm = (term) => ({
+  type: SET_TERM,
+  term
+});
 
 export const getUsers = (currentPage, pageSize, inputValue) => {
   return (dispatch) => {
     dispatch(updateFetching(true));
     dispatch(setLastLoadedPage(currentPage));
 
-    API.getUsers(currentPage, pageSize, inputValue).then( data => {
+    usersAPI.getUsers(currentPage, pageSize, inputValue).then(data => {
       dispatch(updateFetching(false));
       if (!data) return;
       dispatch(setTotalCount(data.totalCount));

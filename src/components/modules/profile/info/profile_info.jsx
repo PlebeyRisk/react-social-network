@@ -112,7 +112,7 @@ const UserInfo = props => {
         ) : (
           <>
             <StyledEditProfileBtn>Редактировать профиль</StyledEditProfileBtn>
-            <StyledOptionsBtn>
+            <StyledOptionsBtn onClick={props.logout}>
               <StyledOptionsBtnIcon />
             </StyledOptionsBtn>
           </>

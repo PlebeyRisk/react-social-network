@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../../theme/globalStyle';
-import TextInput from '../../../../common/textinput';
+import Input from '../../../../common/input';
 import Preloader from '../../../../common/preloader';
 
 const StyledUserStatus = styled.span`
@@ -18,7 +18,7 @@ const StyledEditForm = styled.div`
   display: flex;
 `;
 
-const StyledTextInput = styled(TextInput).attrs({
+const StyledTextInput = styled(Input).attrs({
   type: 'text',
   autoFocus: true,
 })``;
