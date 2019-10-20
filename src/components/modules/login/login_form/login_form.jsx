@@ -37,7 +37,7 @@ const StyledButton = styled.button`
 
 const LoginForm = props => {
   return (
-    <StyledForm onSubmit={props.handleSubmit}>
+    <StyledForm onSubmit={props.handleSubmit} autocomplete>
       <Field name="email" component={StyledInput} type="email" placeholder="Email" required />
       <Field
         name="password"
