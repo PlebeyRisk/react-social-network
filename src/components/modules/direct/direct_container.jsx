@@ -12,8 +12,8 @@ class DirectContainer extends React.Component {
   componentDidUpdate() {}
 
   render() {
-    return <Preloader />;
-    // return <Direct {...this.props}/>;
+    // return <Preloader />;
+    return <Direct {...this.props} />;
   }
 }
 

@@ -5,6 +5,7 @@ import { colors } from '../../../../theme/globalStyle';
 import Input from '../../../common/input';
 import Checkbox from '../../../common/checkbox';
 import Captcha from '../../../common/captcha';
+import { required, maxLength } from '../../../../utils/validators/validators';
 
 const StyledForm = styled.form`
   display: flex;
@@ -14,9 +15,13 @@ const StyledForm = styled.form`
 `;
 
 const StyledInput = styled(Input)`
+  background-color: ${colors.gray};
+  width: 100%;
+`;
+
+const StyledFieldGroup = styled.div`
   margin-bottom: 6px;
   width: 100%;
-  background-color: ${colors.gray};
 `;
 
 const StyledRememberMeGroup = styled.div`
@@ -35,17 +40,29 @@ const StyledButton = styled.button`
   color: ${colors.light};
 `;
 
+const maxLength30 = maxLength(30);
+
 const LoginForm = props => {
   return (
-    <StyledForm onSubmit={props.handleSubmit} autocomplete>
-      <Field name="email" component={StyledInput} type="email" placeholder="Email" required />
-      <Field
-        name="password"
-        component={StyledInput}
-        type="password"
-        placeholder="Пароль"
-        required
-      />
+    <StyledForm onSubmit={props.handleSubmit} autoComplete noValidate>
+      <StyledFieldGroup>
+        <Field
+          name="email"
+          component={StyledInput}
+          type="email"
+          placeholder="Email"
+          validate={[required, maxLength30]}
+        />
+      </StyledFieldGroup>
+      <StyledFieldGroup>
+        <Field
+          name="password"
+          component={StyledInput}
+          type="password"
+          placeholder="Пароль"
+          validate={[required, maxLength30]}
+        />
+      </StyledFieldGroup>
       <StyledRememberMeGroup>
         <Field
           name="rememberMe"
@@ -59,7 +76,13 @@ const LoginForm = props => {
         getCaptcha={props.getCaptcha}
         isFetchingCaptchaInProgress={props.isFetchingCaptchaInProgress}
       />
-      <Field name="captcha" component={StyledInput} type="text" placeholder="Каптча" required />
+      <Field
+        name="captcha"
+        component={StyledInput}
+        type="text"
+        placeholder="Каптча"
+        validate={[required, maxLength30]}
+      />
       <StyledButton type="submit">Войти</StyledButton>
     </StyledForm>
   );

@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../theme/globalStyle';
+import { reduxForm, Field } from 'redux-form';
 
-const StyledSendMessageForm = styled.div`
+const StyledSendMessageForm = styled.form`
   flex: none;
   display: flex;
   margin: 5px 10px 0;
@@ -13,7 +14,7 @@ const StyledSendMessageForm = styled.div`
   background-color: ${colors.light};
 `;
 
-const StyledTextArea = styled.textarea`
+const StyledField = styled(Field)`
   flex: 1;
   border: none;
   outline: 0;
@@ -26,9 +27,9 @@ const StyledTextArea = styled.textarea`
   word-wrap: break-word;
 `;
 
-const StyledSubmit= styled.input.attrs({
-  type: "button",
-  value: "Отправить"
+const StyledSubmit = styled.input.attrs({
+  type: 'submit',
+  value: 'Отправить',
 })`
   flex: none;
   border: none;
@@ -42,25 +43,14 @@ const StyledSubmit= styled.input.attrs({
   }
 `;
 
-const SendMessageForm = (props) => {
-  const newMessageValue = props.newMessageValue;
-  const newMessageRef = props.newMessageRef;
-
-  const onSendMessage = () => {
-    props.sendMessage();
-  };
-
-  const onMessageChange = (e) => {
-    const value = e.currentTarget.value;
-    props.onMessageChange(value);
-  }
-
+const SendMessageForm = props => {
+  console.log(props);
   return (
-    <StyledSendMessageForm>
-      <StyledTextArea onChange={onMessageChange} ref={newMessageRef} value={newMessageValue}/>
-      <StyledSubmit onClick={onSendMessage}/>
+    <StyledSendMessageForm onSubmit={props.handleSubmit}>
+      <StyledField name="message" component="textarea" />
+      <StyledSubmit />
     </StyledSendMessageForm>
   );
-}
+};
 
-export default SendMessageForm;
+export default reduxForm({ form: 'sendMessage' })(SendMessageForm);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import SendMessageForm from './send_message_form';
 import MessagesBox from './messages_box';
@@ -12,26 +12,30 @@ const StyledMessages = styled.div`
   border-left: 1px solid ${colors.border};
 `;
 
-const Messages = (props) => {
+const Messages = props => {
   const newMessageElem = React.createRef();
 
-  const onSendMessage = () => {
-    props.sendMessage();
+  const onSendMessage = formData => {
+    console.log(formData);
+    // props.sendMessage();
   };
 
-  const onMessageChange = (value) => {
+  const onMessageChange = value => {
     props.updateNewMessage(value);
   };
 
   return (
     <StyledMessages>
-      <MessagesBox messages={props.messages} />
-      <SendMessageForm onMessageChange={onMessageChange}
-                       newMessageRef={newMessageElem}
-                       newMessageValue={props.newMessageValue}
-                       sendMessage={onSendMessage}/>
+      {/* <MessagesBox messages={props.messages} /> */}
+      <SendMessageForm
+        onMessageChange={onMessageChange}
+        newMessageRef={newMessageElem}
+        newMessageValue={props.newMessageValue}
+        sendMessage={onSendMessage}
+        onSubmit={onSendMessage}
+      />
     </StyledMessages>
   );
-}
+};
 
 export default Messages;

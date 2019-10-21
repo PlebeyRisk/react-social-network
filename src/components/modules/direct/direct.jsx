@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import Container from '../../common/container';
 import MessagesContainer from './messages/messages_container';
@@ -22,11 +22,11 @@ const Direct = () => {
   return (
     <StyledDirect>
       <MainContainer>
-        <DialogsContainer/>
-        <MessagesContainer/>
+        {/* <DialogsContainer/> */}
+        <MessagesContainer />
       </MainContainer>
     </StyledDirect>
   );
-}
+};
 
 export default Direct;

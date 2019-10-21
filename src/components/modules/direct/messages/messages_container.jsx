@@ -1,17 +1,13 @@
-import Messages from './messages'
-import { sendMessage, updateNewMessage } from '../../../../redux/direct-reducer';
+import Messages from './messages';
 import { connect } from 'react-redux';
 
-let mapStateToProps = (state) => {
-  return {
-    messages: state.direct.messages,
-    newMessageValue: state.direct.newMessage
-  }
-}
+let mapStateToProps = state => {
+  return {};
+};
 
 const MessagesContainer = connect(
   mapStateToProps,
-  { updateNewMessage, sendMessage
-  })(Messages);
+  {},
+)(Messages);
 
 export default MessagesContainer;

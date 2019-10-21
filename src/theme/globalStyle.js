@@ -1,4 +1,6 @@
-import { createGlobalStyle } from "styled-components"
+import {
+  createGlobalStyle
+} from "styled-components"
 
 export const colors = {
   primary: '#262626',
@@ -14,10 +16,15 @@ export const colors = {
   textFour: 'rgba(38, 38, 38, 0.2)',
 
   border: '#dbdbdb',
-  placeholder: '#999'
+  placeholder: '#999',
+
+  error: '#be4b49',
+  errorShadow: 'rgba(139, 3, 0, .75)',
+  errorBorder: 'red',
+
 }
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle `
   body {
     margin: 0;
     background-color: #fafafa;
