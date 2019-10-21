@@ -21,7 +21,6 @@ export const colors = {
   error: '#be4b49',
   errorShadow: 'rgba(139, 3, 0, .75)',
   errorBorder: 'red',
-
 }
 
 const GlobalStyle = createGlobalStyle `
