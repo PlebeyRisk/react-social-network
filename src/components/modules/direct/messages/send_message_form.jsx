@@ -44,7 +44,6 @@ const StyledSubmit = styled.input.attrs({
 `;
 
 const SendMessageForm = props => {
-  console.log(props);
   return (
     <StyledSendMessageForm onSubmit={props.handleSubmit}>
       <StyledField name="message" component="textarea" />

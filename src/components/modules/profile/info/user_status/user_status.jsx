@@ -44,7 +44,6 @@ class UserStatus extends React.Component {
     const currentStatus = this.props.textStatus;
 
     this.deactivateEditMode();
-    console.log(newStatus + ' ' + currentStatus);
     if (newStatus === currentStatus) return;
 
     this.props.setTextStatus(newStatus);

@@ -8,6 +8,7 @@ import {
   clearUsers,
 } from '../../../../../redux/search-users-reducer';
 import SearchUserList from './users_list';
+import { usersSEL } from '../../../../../redux/search-users-selectors';
 
 class SearchUsersListContainer extends React.Component {
   loadUsers() {
@@ -59,16 +60,27 @@ class SearchUsersListContainer extends React.Component {
 }
 
 let mapStateToProps = state => {
+  const {
+    getUsers,
+    getUsersListHidden,
+    getPageSize,
+    getTotalCount,
+    getCurrentPage,
+    getLastLoadedPage,
+    getIsFetching,
+    getInputValue,
+    getTerm,
+  } = usersSEL;
   return {
-    users: state.searchUsers.usersList.users,
-    hidden: state.searchUsers.usersList.hidden,
-    pageSize: state.searchUsers.usersList.pageSize,
-    totalCount: state.searchUsers.usersList.totalCount,
-    currentPage: state.searchUsers.usersList.currentPage,
-    lastLoadedPage: state.searchUsers.usersList.lastLoadedPage,
-    isFetching: state.searchUsers.usersList.isFetching,
-    inputValue: state.searchUsers.input.value,
-    term: state.searchUsers.usersList.term,
+    users: getUsers(state),
+    hidden: getUsersListHidden(state),
+    pageSize: getPageSize(state),
+    totalCount: getTotalCount(state),
+    currentPage: getCurrentPage(state),
+    lastLoadedPage: getLastLoadedPage(state),
+    isFetching: getIsFetching(state),
+    inputValue: getInputValue(state),
+    term: getTerm(state),
   };
 };
 

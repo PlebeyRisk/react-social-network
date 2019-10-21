@@ -51,7 +51,6 @@ const StyledBox = styled.div`
 const Input = ({ meta, input, ...props }) => {
   const { error, active, visited, submitFailed } = meta;
   const hasError = error && !active && (visited || submitFailed);
-  console.log(meta);
   return (
     <StyledBox error={error} active={active} hasError={hasError}>
       <StyledInput {...props} {...input} hasError={hasError} />

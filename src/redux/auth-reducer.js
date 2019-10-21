@@ -1,6 +1,9 @@
 import {
   authAPI
 } from "../api/api";
+import {
+  stopSubmit
+} from 'redux-form'
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const UPDATE_FETCHING = 'AUTH_UPDATE_FETCHING'
@@ -16,7 +19,7 @@ const initialState = {
   isFetching: false,
   isAuth: false,
   captcha: null,
-  isFetchingCaptchaInProgress: false
+  isFetchingCaptchaInProgress: false,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -104,14 +107,33 @@ export const auth = () => {
 
 export const login = (email, password, rememberMe, captcha) => {
   return (dispatch) => {
-    dispatch(updateFetching(true));
-
     authAPI.login(email, password, rememberMe, captcha).then(data => {
-      dispatch(updateFetching(false));
-
-      if (data && data.resultCode === 0) {
+      console.log(data);
+      if (!data) return;
+      if (data.resultCode === 0) {
         dispatch(auth());
+      } else if (data.resultCode === 10) {
+        dispatch(getCaptcha());
+        errorsHandler(data.messages);
+      } else {
+        errorsHandler(data.messages);
       }
+
+      function errorsHandler(messages) {
+        console.log(messages);
+        let errors = {};
+        if (messages.includes("Incorrect anti-bot symbols")) {
+          errors = {
+            captcha: "Неправильная каптча"
+          }
+        } else {
+          errors = {
+            email: "Неправильный Email или пароль",
+            password: "Неправильный Email или пароль",
+          }
+        }
+        dispatch(stopSubmit('login', errors));
+      };
     });
   };
 };

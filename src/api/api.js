@@ -46,7 +46,7 @@ const login = (email, password, rememberMe, captcha) => {
   return instance.post(`/auth/login/`, {
     email,
     password,
-    rememberMe,
+    rememberMe: false,
     captcha
   }).then(response => response.data, (error) => console.log('error fetching login(): ' + error));
 }

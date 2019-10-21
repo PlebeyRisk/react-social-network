@@ -1,30 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Login from './login';
-import { auth, login, getCaptcha } from '../../../redux/auth-reducer';
+import { login, getCaptcha } from '../../../redux/auth-reducer';
 import Preloader from '../../common/preloader';
+import { Redirect } from 'react-router-dom';
 
 class LoginContainer extends React.Component {
-  auth = () => {
-    if (this.props.isFetching) return;
-    this.props.auth();
-  };
-
   login = formData => {
     const { email, password, rememberMe, captcha } = formData;
     this.props.login(email, password, rememberMe, captcha);
   };
 
-  componentDidMount() {
-    this.auth();
-  }
+  componentDidMount() {}
 
   componentDidUpdate() {}
 
   render() {
     if (this.props.isFetching) return <Preloader />;
     return this.props.isAuth ? (
-      <div>Вы вошли</div>
+      <Redirect to="/profile" />
     ) : (
       <Login {...this.props} onSubmit={this.login} />
     );
@@ -45,5 +39,5 @@ let mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { auth, login, getCaptcha },
+  { login, getCaptcha },
 )(LoginContainer);

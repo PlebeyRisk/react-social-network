@@ -40,6 +40,7 @@ const StyledButton = styled.button`
   color: ${colors.light};
 `;
 
+const maxLength6 = maxLength(6);
 const maxLength30 = maxLength(30);
 
 const LoginForm = props => {
@@ -71,18 +72,25 @@ const LoginForm = props => {
           placeholder="Запомнить меня"
         />
       </StyledRememberMeGroup>
-      <Captcha
-        captcha={props.captcha}
-        getCaptcha={props.getCaptcha}
-        isFetchingCaptchaInProgress={props.isFetchingCaptchaInProgress}
-      />
-      <Field
-        name="captcha"
-        component={StyledInput}
-        type="text"
-        placeholder="Каптча"
-        validate={[required, maxLength30]}
-      />
+
+      {props.captcha ? (
+        <>
+          <Captcha
+            captcha={props.captcha}
+            getCaptcha={props.getCaptcha}
+            isFetchingCaptchaInProgress={props.isFetchingCaptchaInProgress}
+          />
+          <Field
+            name="captcha"
+            component={StyledInput}
+            type="text"
+            placeholder="Каптча"
+            validate={props.captcha ? [required, maxLength6] : [maxLength6]}
+          />
+        </>
+      ) : (
+        undefined
+      )}
       <StyledButton type="submit">Войти</StyledButton>
     </StyledForm>
   );
