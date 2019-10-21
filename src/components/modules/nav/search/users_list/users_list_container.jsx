@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   updateUsersListHidden,
@@ -10,54 +10,42 @@ import {
 import SearchUserList from './users_list';
 import { usersSEL } from '../../../../../redux/search-users-selectors';
 
-class SearchUsersListContainer extends React.Component {
-  loadUsers() {
-    if (this.props.isFetching) return;
-    this.props.getUsers(this.props.currentPage, this.props.pageSize, this.props.inputValue);
-  }
+const SearchUsersListContainer = props => {
+  const loadUsers = () => {
+    if (props.isFetching) return;
+    props.getUsers(props.currentPage, props.pageSize, props.inputValue);
+  };
 
-  checkOnScroll = target => {
-    if (this.props.isFetching) return;
+  const checkOnScroll = target => {
+    if (props.isFetching) return;
 
-    const numberLastPage = Math.ceil(this.props.totalCount / this.props.pageSize);
-    if (this.props.currentPage === numberLastPage) return;
+    const numberLastPage = Math.ceil(props.totalCount / props.pageSize);
+    if (props.currentPage === numberLastPage) return;
 
     const endScrollY = target.scrollHeight - target.clientHeight;
     const currentScrollY = Math.ceil(target.scrollTop);
 
     if (endScrollY === currentScrollY) {
-      const newCurrentPage = this.props.currentPage + 1;
-      this.props.setCurrentPage(newCurrentPage);
+      const newCurrentPage = props.currentPage + 1;
+      props.setCurrentPage(newCurrentPage);
     }
   };
 
-  componentDidMount() {
-    this.loadUsers();
-  }
-
-  componentDidUpdate() {
-    if (this.props.term !== this.props.inputValue) {
-      this.props.setTerm(this.props.inputValue);
-      this.props.clearUsers();
+  useEffect(() => {
+    if (props.term !== props.inputValue) {
+      props.setTerm(props.inputValue);
+      props.clearUsers();
     }
 
-    if (this.props.currentPage > this.props.lastLoadedPage) {
-      this.loadUsers();
+    if (props.currentPage > props.lastLoadedPage) {
+      loadUsers();
     }
-  }
+  }, [props]);
 
-  render() {
-    if (this.props.users.length === 0) return <></>;
+  if (props.users.length === 0) return <></>;
 
-    return (
-      <SearchUserList
-        users={this.props.users}
-        checkOnScroll={this.checkOnScroll}
-        hidden={this.props.hidden}
-      />
-    );
-  }
-}
+  return <SearchUserList users={props.users} checkOnScroll={checkOnScroll} hidden={props.hidden} />;
+};
 
 let mapStateToProps = state => {
   const {

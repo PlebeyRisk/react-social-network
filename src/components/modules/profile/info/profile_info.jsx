@@ -4,6 +4,7 @@ import defaultImage from '../../../../img/users/ava-default.jpg';
 import optionsIcon from '../../../../img/options.svg';
 import { colors } from '../../../../theme/globalStyle';
 import UserStatus from './user_status/user_status';
+import Following from './subscriptions/following';
 
 const StyledProfileInfo = styled.header`
   display: flex;
@@ -126,7 +127,9 @@ const UserInfo = props => {
           isUpdateStatusInProgress={props.isUpdateStatusInProgress}
         />
       </StyledInfoSection>
-      <StyledInfoSection>{/* <StyledNumber>20</StyledNumber> подписок */}</StyledInfoSection>
+      <StyledInfoSection>
+        <Following />
+      </StyledInfoSection>
       <StyledInfoSection>{aboutMe}</StyledInfoSection>
     </StyledUserInfo>
   );

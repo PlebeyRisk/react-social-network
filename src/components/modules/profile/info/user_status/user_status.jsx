@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../../theme/globalStyle';
 import Preloader from '../../../../common/preloader';
@@ -22,64 +22,53 @@ const StyledPreloaderBox = styled.div`
   height: 15px;
 `;
 
-class UserStatus extends React.Component {
-  state = {
-    editMode: false,
+const UserStatus = props => {
+  let [editMode, setEditMode] = useState(false);
+
+  const activateEditMode = () => {
+    setEditMode(true);
   };
 
-  activateEditMode = () => {
-    this.setState({
-      editMode: true,
-    });
+  const deactivateEditMode = () => {
+    setEditMode(false);
   };
 
-  deactivateEditMode = () => {
-    this.setState({
-      editMode: false,
-    });
-  };
-
-  updateTextStatus = formData => {
+  const updateTextStatus = formData => {
     const newStatus = formData.status;
-    const currentStatus = this.props.textStatus;
+    const currentStatus = props.textStatus;
 
-    this.deactivateEditMode();
+    deactivateEditMode();
     if (newStatus === currentStatus) return;
 
-    this.props.setTextStatus(newStatus);
+    props.setTextStatus(newStatus);
   };
 
-  preventDefault = e => {
+  const preventDefault = e => {
     e.preventDefault();
   };
 
-  render() {
-    return (
-      <StyledUserStatus>
-        {this.props.isUpdateStatusInProgress ? (
-          <StyledPreloaderBox>
-            <Preloader size="15" />
-          </StyledPreloaderBox>
-        ) : (
-          undefined
-        )}
+  return (
+    <StyledUserStatus>
+      {props.isUpdateStatusInProgress ? (
+        <StyledPreloaderBox>
+          <Preloader size="15" />
+        </StyledPreloaderBox>
+      ) : (
+        undefined
+      )}
 
-        {!this.state.editMode ? (
-          <StyledTextStatus
-            onClick={this.activateEditMode}
-            disabled={!this.props.isAuthUser || this.props.isUpdateStatusInProgress}
-          >
-            {this.props.textStatus || (this.props.isAuthUser ? 'изменить статус' : '')}
-          </StyledTextStatus>
-        ) : (
-          <EditStatusForm
-            deactivateEditMode={this.deactivateEditMode}
-            onSubmit={this.updateTextStatus}
-          />
-        )}
-      </StyledUserStatus>
-    );
-  }
-}
+      {!editMode ? (
+        <StyledTextStatus
+          onClick={activateEditMode}
+          disabled={!props.isAuthUser || props.isUpdateStatusInProgress}
+        >
+          {props.textStatus || (props.isAuthUser ? 'изменить статус' : '')}
+        </StyledTextStatus>
+      ) : (
+        <EditStatusForm deactivateEditMode={deactivateEditMode} onSubmit={updateTextStatus} />
+      )}
+    </StyledUserStatus>
+  );
+};
 
 export default UserStatus;
