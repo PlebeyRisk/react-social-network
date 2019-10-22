@@ -51,7 +51,7 @@ const GlobalStyle = createGlobalStyle `
 
     ::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      background: rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0.2);
     }
   }
 

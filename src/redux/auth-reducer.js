@@ -108,7 +108,6 @@ export const auth = () => {
 export const login = (email, password, rememberMe, captcha) => {
   return (dispatch) => {
     authAPI.login(email, password, rememberMe, captcha).then(data => {
-      console.log(data);
       if (!data) return;
       if (data.resultCode === 0) {
         dispatch(auth());
@@ -120,7 +119,7 @@ export const login = (email, password, rememberMe, captcha) => {
       }
 
       function errorsHandler(messages) {
-        console.log(messages);
+
         let errors = {};
         if (messages.includes("Incorrect anti-bot symbols")) {
           errors = {

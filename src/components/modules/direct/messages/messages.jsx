@@ -16,7 +16,6 @@ const Messages = props => {
   const newMessageElem = React.createRef();
 
   const onSendMessage = formData => {
-    console.log(formData);
     // props.sendMessage();
   };
 

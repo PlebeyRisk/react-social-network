@@ -4,7 +4,7 @@ import defaultImage from '../../../../img/users/ava-default.jpg';
 import optionsIcon from '../../../../img/options.svg';
 import { colors } from '../../../../theme/globalStyle';
 import UserStatus from './user_status/user_status';
-import Following from './subscriptions/following';
+import Following from './following/following';
 
 const StyledProfileInfo = styled.header`
   display: flex;
@@ -81,11 +81,6 @@ const StyledOptionsBtnIcon = styled.span`
   background-size: cover;
 `;
 
-const StyledNumber = styled.span`
-  margin-right: 5px;
-  font-weight: 600;
-`;
-
 const UserAvatar = props => {
   return (
     <StyledUserAvatar>
@@ -96,11 +91,12 @@ const UserAvatar = props => {
 
 const UserInfo = props => {
   const { fullName, aboutMe, userId } = props.userInfo;
+  const isAuthUser = props.authUserId === userId;
   return (
     <StyledUserInfo>
       <StyledInfoSection>
         <StyledName>{fullName}</StyledName>
-        {props.authUserId !== userId ? (
+        {!isAuthUser ? (
           !props.isFollow ? (
             <StyledSubscribeBtn onClick={props.follow} disabled={props.isFollowingInProgress}>
               Подписаться
@@ -128,7 +124,16 @@ const UserInfo = props => {
         />
       </StyledInfoSection>
       <StyledInfoSection>
-        <Following />
+        {isAuthUser ? (
+          <Following
+            followingUsers={props.followingUsers}
+            isLoadFollowingUsersInProgress={props.isLoadFollowingUsersInProgress}
+            follow={props.follow}
+            unfollow={props.unfollow}
+          />
+        ) : (
+          undefined
+        )}
       </StyledInfoSection>
       <StyledInfoSection>{aboutMe}</StyledInfoSection>
     </StyledUserInfo>

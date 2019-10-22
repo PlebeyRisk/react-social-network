@@ -16,6 +16,10 @@ const UsersList = props => {
       text={user.text || ''}
       image={user.image || defaultImage}
       size={props.elemSize}
+      followed={user.followed}
+      isFollowing={props.isFollowing}
+      follow={props.follow}
+      unfollow={props.unfollow}
     />
   ));
 

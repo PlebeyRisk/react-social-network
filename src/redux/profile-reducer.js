@@ -1,6 +1,7 @@
 import {
   followAPI,
-  profileAPI
+  profileAPI,
+  usersAPI
 } from '../api/api';
 
 const SET_USER_INFO = 'SET_USER_INFO';
@@ -10,6 +11,9 @@ const UPDATE_FOLLOWING_PROGRESS = 'UPDATE_FOLLOWING_PROGRESS';
 const UPDATE_OLD_USER_ID = 'UPDATE_OLD_USER_ID';
 const UPDATE_TEXT_STATUS = 'UPDATE_TEXT_STATUS';
 const UPDATE_STATUS_PROGRESS = 'UPDATE_STATUS_PROGRESS';
+const ADD_FOLLOWING_USERS = 'ADD_FOLLOWING_USERS';
+const CLEAR_FOLLOWING_USERS = 'CLEAR_FOLLOWING_USERS';
+const UPDATE_LOAD_FOLLOWING_USERS_PROGRESS = 'UPDATE_LOAD_FOLLOWING_USERS_PROGRESS';
 
 const initialState = {
   userInfo: null,
@@ -19,6 +23,8 @@ const initialState = {
   isFollowingInProgress: false,
   textStatus: null,
   isUpdateStatusInProgress: false,
+  followingUsers: [],
+  isLoadFollowingUsersInProgress: false,
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -72,6 +78,27 @@ const profileReducer = (state = initialState, action) => {
       };
       return stateCopy;
     }
+    case CLEAR_FOLLOWING_USERS: {
+      let stateCopy = {
+        ...state,
+        followingUsers: [],
+      };
+      return stateCopy;
+    }
+    case ADD_FOLLOWING_USERS: {
+      let stateCopy = {
+        ...state,
+        followingUsers: [...state.followingUsers, ...action.users],
+      };
+      return stateCopy;
+    }
+    case UPDATE_LOAD_FOLLOWING_USERS_PROGRESS: {
+      let stateCopy = {
+        ...state,
+        isLoadFollowingUsersInProgress: action.progress,
+      };
+      return stateCopy;
+    }
     default:
       return state;
   }
@@ -104,6 +131,17 @@ export const updateTextStatus = status => ({
 export const updateStatusProgress = progress => ({
   type: UPDATE_STATUS_PROGRESS,
   progress,
+});
+export const addFollowingUsers = users => ({
+  type: ADD_FOLLOWING_USERS,
+  users,
+});
+export const clearFollowingUsers = () => ({
+  type: CLEAR_FOLLOWING_USERS
+});
+export const updateLoadFollowingUsersProgress = progress => ({
+  type: UPDATE_LOAD_FOLLOWING_USERS_PROGRESS,
+  progress
 });
 
 export const loadUser = userId => {
@@ -141,12 +179,14 @@ export const loadUser = userId => {
 
 export const follow = userId => {
   return dispatch => {
+    console.log(`follow ${userId}`);
     dispatch(updateFollowingProgress(true));
 
     followAPI.postFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
+        console.log(`done`);
         dispatch(updateFollow(true));
       }
     });
@@ -155,12 +195,14 @@ export const follow = userId => {
 
 export const unfollow = userId => {
   return dispatch => {
+    console.log(`unfollow ${userId}`);
     dispatch(updateFollowingProgress(true));
 
     followAPI.deleteFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
+        console.log(`done`);
         dispatch(updateFollow(false));
       }
     });
@@ -174,6 +216,38 @@ export const setTextStatus = status => {
       dispatch(updateStatusProgress(false));
       if (data && data.resultCode === 0) {
         dispatch(updateTextStatus(status));
+      }
+    });
+  };
+};
+
+export const getFollowingUsers = (page) => {
+  return dispatch => {
+    if (page === 1) {
+      dispatch(updateLoadFollowingUsersProgress(true));
+    }
+
+    usersAPI.getUsers(page, 100).then(data => {
+      if (!data) {
+        dispatch(updateLoadFollowingUsersProgress(false));
+        return;
+      }
+
+      let followingUsers = [];
+      data.items.forEach(user => {
+        if (!user.followed) return;
+        followingUsers.push(user);
+      });
+
+      if (followingUsers.length != 0) {
+        dispatch(addFollowingUsers(followingUsers));
+      }
+
+      const totalPage = Math.ceil(data.totalCount / 100);
+      if (page <= totalPage) {
+        dispatch(getFollowingUsers(page + 1, data.totalCount))
+      } else {
+        dispatch(updateLoadFollowingUsersProgress(false));
       }
     });
   };

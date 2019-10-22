@@ -23,7 +23,7 @@ const StyledPreloaderBox = styled.div`
 `;
 
 const UserStatus = props => {
-  let [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const activateEditMode = () => {
     setEditMode(true);

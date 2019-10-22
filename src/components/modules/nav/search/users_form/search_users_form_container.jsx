@@ -7,28 +7,13 @@ import {
   getUsers,
   clearUsers,
 } from '../../../../../redux/search-users-reducer';
-import SearchUserList from './users_list';
+import SearchUsersForm from './search_users_form';
 import { usersSEL } from '../../../../../redux/search-users-selectors';
 
-const SearchUsersListContainer = props => {
+const UsersFormContainer = props => {
   const loadUsers = () => {
     if (props.isFetching) return;
     props.getUsers(props.currentPage, props.pageSize, props.inputValue);
-  };
-
-  const checkOnScroll = target => {
-    if (props.isFetching) return;
-
-    const numberLastPage = Math.ceil(props.totalCount / props.pageSize);
-    if (props.currentPage === numberLastPage) return;
-
-    const endScrollY = target.scrollHeight - target.clientHeight;
-    const currentScrollY = Math.ceil(target.scrollTop);
-
-    if (endScrollY === currentScrollY) {
-      const newCurrentPage = props.currentPage + 1;
-      props.setCurrentPage(newCurrentPage);
-    }
   };
 
   useEffect(() => {
@@ -44,7 +29,17 @@ const SearchUsersListContainer = props => {
 
   if (props.users.length === 0) return <></>;
 
-  return <SearchUserList users={props.users} checkOnScroll={checkOnScroll} hidden={props.hidden} />;
+  return (
+    <SearchUsersForm
+      users={props.users}
+      hidden={props.hidden}
+      isFetching={props.isFetching}
+      totalCount={props.totalCount}
+      pageSize={props.pageSize}
+      currentPage={props.currentPage}
+      setCurrentPage={props.setCurrentPage}
+    />
+  );
 };
 
 let mapStateToProps = state => {
@@ -75,4 +70,4 @@ let mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { updateUsersListHidden, setCurrentPage, setTerm, getUsers, clearUsers },
-)(SearchUsersListContainer);
+)(UsersFormContainer);
