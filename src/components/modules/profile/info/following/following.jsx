@@ -38,6 +38,7 @@ const StyledHeader = styled.div`
   padding: 10px;
   border-bottom: 1px solid ${colors.border};
   text-align: center;
+  font-weight: 600;
 `;
 
 const StyledBody = styled.div`
@@ -61,9 +62,9 @@ const Following = props => {
   };
 
   const closeModal = () => {
+    props.updateFollowingUsers();
     setVisibleModalMode(false);
   };
-
   return (
     <StyledFollowing>
       {props.isLoadFollowingUsersInProgress ? (
@@ -84,7 +85,13 @@ const Following = props => {
           <StyledCloseButton onClick={closeModal} />
           <StyledHeader>Ваши подписки</StyledHeader>
           <StyledBody>
-            <UsersFormContainer users={props.followingUsers} follow={props.follow} unfollow={props.unfollow}/>
+            <UsersFormContainer
+              users={props.followingUsers}
+              follow={props.follow}
+              unfollow={props.unfollow}
+              isFollow={props.isFollow}
+              isFollowingInProgress={props.isFollowingInProgress}
+            />
           </StyledBody>
         </StyledContent>
       </Modal>

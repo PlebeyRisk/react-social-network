@@ -14,6 +14,7 @@ const UPDATE_STATUS_PROGRESS = 'UPDATE_STATUS_PROGRESS';
 const ADD_FOLLOWING_USERS = 'ADD_FOLLOWING_USERS';
 const CLEAR_FOLLOWING_USERS = 'CLEAR_FOLLOWING_USERS';
 const UPDATE_LOAD_FOLLOWING_USERS_PROGRESS = 'UPDATE_LOAD_FOLLOWING_USERS_PROGRESS';
+const UPDATE_USER_FOLLOW_STATUS = 'UPDATE_USER_FOLLOW_STATUS';
 
 const initialState = {
   userInfo: null,
@@ -99,6 +100,16 @@ const profileReducer = (state = initialState, action) => {
       };
       return stateCopy;
     }
+    case UPDATE_USER_FOLLOW_STATUS: {
+      let stateCopy = {
+        ...state
+      };
+      stateCopy.followingUsers.forEach(user => {
+        if (user.id != action.data.userId) return;
+        user.followed = action.data.status;
+      });
+      return stateCopy;
+    }
     default:
       return state;
   }
@@ -144,6 +155,12 @@ export const updateLoadFollowingUsersProgress = progress => ({
   progress
 });
 
+export const updateUserFollowStatus = (userId, status) => ({
+  type: UPDATE_USER_FOLLOW_STATUS,
+  data: {userId,
+  status}
+});
+
 export const loadUser = userId => {
   return dispatch => {
     const loadFollowStatus = () => {
@@ -179,13 +196,13 @@ export const loadUser = userId => {
 
 export const follow = userId => {
   return dispatch => {
-    console.log(`follow ${userId}`);
     dispatch(updateFollowingProgress(true));
 
     followAPI.postFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
+        dispatch(updateUserFollowStatus(userId, true));
         console.log(`done`);
         dispatch(updateFollow(true));
       }
@@ -193,15 +210,15 @@ export const follow = userId => {
   };
 };
 
-export const unfollow = userId => {
+export const unfollow = (userId) => {
   return dispatch => {
-    console.log(`unfollow ${userId}`);
     dispatch(updateFollowingProgress(true));
-
+  
     followAPI.deleteFollow(userId).then(data => {
       dispatch(updateFollowingProgress(false));
 
       if (data && data.resultCode === 0) {
+        dispatch(updateUserFollowStatus(userId, false));
         console.log(`done`);
         dispatch(updateFollow(false));
       }
@@ -212,6 +229,7 @@ export const unfollow = userId => {
 export const setTextStatus = status => {
   return dispatch => {
     dispatch(updateStatusProgress(true));
+
     profileAPI.updateStatus(status).then(data => {
       dispatch(updateStatusProgress(false));
       if (data && data.resultCode === 0) {
@@ -224,6 +242,7 @@ export const setTextStatus = status => {
 export const getFollowingUsers = (page) => {
   return dispatch => {
     if (page === 1) {
+      dispatch(clearFollowingUsers());
       dispatch(updateLoadFollowingUsersProgress(true));
     }
 
@@ -246,7 +265,7 @@ export const getFollowingUsers = (page) => {
       const totalPage = Math.ceil(data.totalCount / 100);
       if (page <= totalPage) {
         dispatch(getFollowingUsers(page + 1, data.totalCount))
-      } else {
+      } else {        
         dispatch(updateLoadFollowingUsersProgress(false));
       }
     });

@@ -5,6 +5,7 @@ import optionsIcon from '../../../../img/options.svg';
 import { colors } from '../../../../theme/globalStyle';
 import UserStatus from './user_status/user_status';
 import Following from './following/following';
+import { NavLink } from 'react-router-dom';
 
 const StyledProfileInfo = styled.header`
   display: flex;
@@ -65,6 +66,7 @@ const StyledOptionsBtn = styled.button.attrs({
 const StyledSubscribeBtn = styled.button.attrs({
   type: 'button',
 })`
+  margin-right: 20px;
   padding: 0 24px;
   background-color: ${colors.secondary};
   border: none;
@@ -79,6 +81,22 @@ const StyledOptionsBtnIcon = styled.span`
   height: 24px;
   background: url(${optionsIcon}) center no-repeat;
   background-size: cover;
+`;
+
+const StyledSendMessageBtnIcon = styled.span`
+  display: block;
+  width: 24px;
+  height: 24px;
+`;
+
+const StyledSendMessageBtn = styled(NavLink)`
+  padding: 0 10px;
+  background-color: transparent;
+  border: 1px solid ${colors.border};
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 30px;
 `;
 
 const UserAvatar = props => {
@@ -98,11 +116,17 @@ const UserInfo = props => {
         <StyledName>{fullName}</StyledName>
         {!isAuthUser ? (
           !props.isFollow ? (
-            <StyledSubscribeBtn onClick={props.follow} disabled={props.isFollowingInProgress}>
+            <StyledSubscribeBtn
+              onClick={() => props.follow(userId)}
+              disabled={props.isFollowingInProgress}
+            >
               Подписаться
             </StyledSubscribeBtn>
           ) : (
-            <StyledSubscribeBtn onClick={props.unfollow} disabled={props.isFollowingInProgress}>
+            <StyledSubscribeBtn
+              onClick={() => props.unfollow(userId)}
+              disabled={props.isFollowingInProgress}
+            >
               Отписаться
             </StyledSubscribeBtn>
           )
@@ -113,6 +137,11 @@ const UserInfo = props => {
               <StyledOptionsBtnIcon />
             </StyledOptionsBtn>
           </>
+        )}
+        {!isAuthUser ? (
+          <StyledSendMessageBtn to={'/direct/' + userId}>Написать сообщение</StyledSendMessageBtn>
+        ) : (
+          undefined
         )}
       </StyledInfoSection>
       <StyledInfoSection>
@@ -130,6 +159,9 @@ const UserInfo = props => {
             isLoadFollowingUsersInProgress={props.isLoadFollowingUsersInProgress}
             follow={props.follow}
             unfollow={props.unfollow}
+            isFollow={props.isFollow}
+            isFollowingInProgress={props.isFollowingInProgress}
+            updateFollowingUsers={props.updateFollowingUsers}
           />
         ) : (
           undefined

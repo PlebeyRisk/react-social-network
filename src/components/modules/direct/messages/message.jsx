@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../theme/globalStyle';
 
@@ -19,20 +19,13 @@ const StyledReceivedMessage = styled(StyledMessage)`
   background-color: ${colors.stillGray};
 `;
 
-const Message = (props) => {
-  if (props.type === 'sent') {
-    return (
-      <StyledSentMessage>
-        {props.text}
-      </StyledSentMessage>
-    );
-  }
-
-  return (
-    <StyledReceivedMessage>
-      {props.text}
-    </StyledReceivedMessage>
+const Message = props => {
+  const isSentMessage = props.friendId !== props.senderId;
+  return isSentMessage ? (
+    <StyledSentMessage>{props.body}</StyledSentMessage>
+  ) : (
+    <StyledReceivedMessage>{props.body}</StyledReceivedMessage>
   );
-}
+};
 
 export default Message;

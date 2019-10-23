@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../theme/globalStyle';
 import UsersList from './users_list';
@@ -48,9 +48,11 @@ const UsersForm = props => {
         isFollowing={props.isFollowing}
         follow={props.follow}
         unfollow={props.unfollow}
+        isFollow={props.isFollow}
+        isFollowingInProgress={props.isFollowingInProgress}
       />
     </StyledSearchUsersList>
   );
 };
 
-export default UsersForm;
+export default memo(UsersForm);

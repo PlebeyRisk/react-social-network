@@ -25,25 +25,35 @@ class ProfileContainer extends React.Component {
     this.props.loadUser(this.props.match.params.userId || this.props.authUserId || 2);
   };
 
-  follow = () => {
-    this.props.follow(this.props.userInfo.userId);
-  };
-
-  unfollow = () => {
-    this.props.unfollow(this.props.userInfo.userId);
+  updateFollowingUsers = () => {
+    this.props.getFollowingUsers(1);
   };
 
   componentDidMount() {
     this.loadUserInfo();
-    this.props.getFollowingUsers(1);
+    this.updateFollowingUsers();
+
+    // let i = 2;
+    // let idTimer = setInterval(() => {
+    //   this.props.follow(i);
+    //   i++;
+    //   console.log(i);
+    //   if (i === 50) {
+    //     clearInterval(idTimer);
+    //   }
+    // }, 1000);
   }
 
   componentDidUpdate(prevProps) {
-    // if (prevProps.lastLoadedPage !== this.props.lastLoadedPage){
-    //   this.loadFollowingUsers();
-    // }
     const prevId = prevProps.match.params.userId;
     const newId = Number(this.props.match.params.userId);
+
+    if (prevProps.match != this.props.match) {
+      this.loadUserInfo();
+      if (isNaN(newId)) {
+        this.updateFollowingUsers();
+      }
+    }
 
     if (!prevId && !newId) return;
     if (prevId == newId) return;
@@ -51,12 +61,8 @@ class ProfileContainer extends React.Component {
     this.loadUserInfo();
   }
 
-  componentWillUnmount() {
-    this.props.clearFollowingUsers();
-  }
-
   render() {
-    return <Profile {...this.props} follow={this.props.follow} unfollow={this.props.unfollow} />;
+    return <Profile {...this.props} updateFollowingUsers={this.updateFollowingUsers} />;
   }
 }
 

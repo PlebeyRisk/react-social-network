@@ -13,25 +13,12 @@ const StyledMessages = styled.div`
 `;
 
 const Messages = props => {
-  const newMessageElem = React.createRef();
-
-  const onSendMessage = formData => {
-    // props.sendMessage();
-  };
-
-  const onMessageChange = value => {
-    props.updateNewMessage(value);
-  };
-
   return (
     <StyledMessages>
-      {/* <MessagesBox messages={props.messages} /> */}
+      <MessagesBox messages={props.messages} friendId={props.friendId} />
       <SendMessageForm
-        onMessageChange={onMessageChange}
-        newMessageRef={newMessageElem}
-        newMessageValue={props.newMessageValue}
-        sendMessage={onSendMessage}
-        onSubmit={onSendMessage}
+        onSubmit={props.sendMessage}
+        isSendingMessagesInProgress={props.isSendingMessagesInProgress}
       />
     </StyledMessages>
   );

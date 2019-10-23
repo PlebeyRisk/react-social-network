@@ -18,7 +18,7 @@ class LoginContainer extends React.Component {
   render() {
     if (this.props.isFetching) return <Preloader />;
     return this.props.isAuth ? (
-      <Redirect to="/profile" />
+      <Redirect to="/direct" />
     ) : (
       <Login {...this.props} onSubmit={this.login} />
     );

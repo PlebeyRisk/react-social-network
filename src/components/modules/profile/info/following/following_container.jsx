@@ -1,37 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import UsersForm from '../../../users_form/users_form';
+import UsersList from '../../../users_form/users_list';
 
 const UsersFormContainer = props => {
-  const [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentUsers, setCurrentUsers] = useState([]);
-
-  useEffect(() => {
-    if (currentPage === 1 && currentUsers.length != 0) return;
-
-    const totalPage = Math.ceil(props.users.length / pageSize);
-
-    if (currentPage <= totalPage) {
-      const startNumber = (currentPage - 1) * pageSize;
-      let endNumber = currentPage * pageSize;
-      const maxNumber = props.users.length;
-
-      if (endNumber > maxNumber) {
-        endNumber = maxNumber;
-      }
-
-      setCurrentUsers([...currentUsers, ...props.users.slice(startNumber, endNumber)]);
-    }
-  }, [currentPage, props.users]);
+  const data = props.users.map(user => {
+    return {
+      id: user.id,
+      name: user.name,
+      text: user.status,
+      image: user.photos.small,
+      followed: user.followed,
+    };
+  });
 
   return (
-    <UsersForm
-      users={currentUsers}
-      pageSize={pageSize}
-      currentPage={currentPage}
-      setCurrentPage={setCurrentPage}
+    <UsersList
+      data={data}
+      elemSize="32"
       follow={props.follow}
       unfollow={props.unfollow}
+      isFollow={props.isFollow}
+      isFollowingInProgress={props.isFollowingInProgress}
       isFollowing
     />
   );

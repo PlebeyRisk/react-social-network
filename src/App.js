@@ -55,7 +55,7 @@ class App extends React.Component {
         <StyledWrapperContent>
           <Route exact path="/" component={Main} />
           <Route path="/explore" component={Explore} />
-          <Route path="/direct" component={DirectContainer} />
+          <Route path="/direct/:userId?" component={DirectContainer} />
           <Route path="/profile/:userId?" component={ProfileContainer} />
           <Route path="/login" component={LoginContainer} />
         </StyledWrapperContent>

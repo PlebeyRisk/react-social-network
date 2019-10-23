@@ -45,7 +45,7 @@ const maxLength30 = maxLength(30);
 
 const LoginForm = props => {
   return (
-    <StyledForm onSubmit={props.handleSubmit} autoComplete noValidate>
+    <StyledForm onSubmit={props.handleSubmit} autoComplete="true" noValidate>
       <StyledFieldGroup>
         <Field
           name="email"

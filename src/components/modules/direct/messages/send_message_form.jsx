@@ -37,17 +37,19 @@ const StyledSubmit = styled.input.attrs({
   font-weight: 700;
   color: ${colors.secondary};
   cursor: pointer;
+  pointer-events: ${props => (props.disabled ? 'none' : 'auto')};
 
-  &:hover {
+  &:active {
     opacity: 0.6;
   }
 `;
 
 const SendMessageForm = props => {
+  console.log(`isSendingMessagesInProgress: ${props.isSendingMessagesInProgress}`);
   return (
     <StyledSendMessageForm onSubmit={props.handleSubmit}>
       <StyledField name="message" component="textarea" />
-      <StyledSubmit />
+      <StyledSubmit disabled={props.isSendingMessagesInProgress} />
     </StyledSendMessageForm>
   );
 };

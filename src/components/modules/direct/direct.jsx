@@ -22,7 +22,7 @@ const Direct = () => {
   return (
     <StyledDirect>
       <MainContainer>
-        {/* <DialogsContainer/> */}
+        <DialogsContainer />
         <MessagesContainer />
       </MainContainer>
     </StyledDirect>

@@ -59,6 +59,46 @@ const getCaptcha = () => {
   return instance.get(`security/get-captcha-url`).then(response => response.data, (error) => console.log('error fetching getCaptcha(): ' + error));
 }
 
+const startChatting = (userId) => {
+  return instance.put(`dialogs/${userId}`).then(response => response.data, (error) => console.log('error fetching startChatting(): ' + error));
+}
+
+const getAllDialogs = () => {
+  return instance.get(`dialogs`).then(response => response.data, (error) => console.log('error fetching getAllDialogs(): ' + error));
+}
+
+const getMessages = (userId) => {
+  return instance.get(`dialogs/${userId}/messages`).then(response => response.data, (error) => console.log('error fetching getMessages(): ' + error));
+}
+
+const sendMessage = (userId, body) => {
+  return instance.post(`dialogs/${userId}/messages`,{body}).then(response => response.data, (error) => console.log('error fetching sendMessage(): ' + error));
+}
+
+const getViewedMessageStatus = (messageId) => {
+  return instance.get(`dialogs/messages/${messageId}/viewed`).then(response => response.data, (error) => console.log('error fetching getViewedMessageStatus(): ' + error));
+}
+
+const messageToSpam = (messageId) => {
+  return instance.post(`dialogs/messages/${messageId}/spam`).then(response => response.data, (error) => console.log('error fetching messageToSpam(): ' + error));
+}
+
+const deleteMessage = (messageId) => {
+  return instance.delete(`dialogs/messages/${messageId}`).then(response => response.data, (error) => console.log('error fetching deleteMessage(): ' + error));
+}
+
+const restoreMessage = (messageId) => {
+  return instance.put(`dialogs/messages/${messageId}/restore`).then(response => response.data, (error) => console.log('error fetching restoreMessage(): ' + error));
+}
+
+const getMessageNewestDate = (userId, date) => {
+  return instance.get(`dialogs/${userId}/messages/new?newerThen=${date}`).then(response => response.data, (error) => console.log('error fetching getMessageNewestDate(): ' + error));
+}
+
+const getNewMessageCount = () => {
+  return instance.get(`dialogs/messages/new/count`).then(response => response.data, (error) => console.log('error fetching getNewMessageCount(): ' + error));
+}
+
 export const usersAPI = {
   getUsers,
 };
@@ -81,4 +121,17 @@ export const followAPI = {
   isFollow,
   postFollow,
   deleteFollow
+};
+
+export const directAPI = {
+  startChatting,
+  getAllDialogs,
+  getMessages,
+  sendMessage,
+  getViewedMessageStatus,
+  messageToSpam,
+  deleteMessage,
+  restoreMessage,
+  getMessageNewestDate,
+  getNewMessageCount
 };
