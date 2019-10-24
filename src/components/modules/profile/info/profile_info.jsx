@@ -83,12 +83,6 @@ const StyledOptionsBtnIcon = styled.span`
   background-size: cover;
 `;
 
-const StyledSendMessageBtnIcon = styled.span`
-  display: block;
-  width: 24px;
-  height: 24px;
-`;
-
 const StyledSendMessageBtn = styled(NavLink)`
   padding: 0 10px;
   background-color: transparent;

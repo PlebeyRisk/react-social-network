@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Container from '../../common/container';
 import MessagesContainer from './messages/messages_container';
 import DialogsContainer from './dialogs/dialogs_container';
+import Preloader from '../../common/preloader';
 
 const StyledDirect = styled.main`
   padding: 0;
@@ -18,7 +19,8 @@ const MainContainer = styled(Container)`
   max-height: 100vh;
 `;
 
-const Direct = () => {
+const Direct = props => {
+  if (!props.initialized) return <Preloader />;
   return (
     <StyledDirect>
       <MainContainer>

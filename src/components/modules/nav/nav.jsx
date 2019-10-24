@@ -4,7 +4,7 @@ import Container from '../../common/container';
 import { colors } from '../../../theme/globalStyle';
 import Logo from './logo';
 import Search from './search/search';
-import NavButtons from './nav_buttons';
+import NavButtonsContainer from './buttons/nav_buttons_container';
 
 const StyledNav = styled.nav`
   position: fixed;
@@ -30,7 +30,7 @@ const Nav = () => {
       <NavContainer>
         <Logo />
         <Search />
-        <NavButtons />
+        <NavButtonsContainer />
       </NavContainer>
     </StyledNav>
   );

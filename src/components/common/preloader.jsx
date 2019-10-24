@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import preloaderIcon from '../../img/preloader.svg';
 
 const StyledPreloader = styled.div`
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0 auto;
+  height: 100%;
 `;
 
 const Preloader = props => {

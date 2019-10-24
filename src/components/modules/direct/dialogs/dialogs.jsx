@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Dialog from './dialog';
 import defaultImage from '../../../../img/users/ava-default.jpg';
 
 const StyledDialog = styled.div`
+  flex: none;
   width: 30%;
   overflow-y: auto;
 `;
@@ -11,6 +12,8 @@ const StyledDialog = styled.div`
 const StyledDialogsList = styled.div``;
 
 const Dialogs = props => {
+  const firstDialogRef = useRef(null);
+
   const dialogs = props.dialogs.map((dialog, index) => {
     const {
       id,
@@ -31,12 +34,20 @@ const Dialogs = props => {
         newMessagesCount={newMessagesCount}
         friendId={props.friendId}
         key={index}
+        isGettingMessagesInProgress={props.isGettingMessagesInProgress}
       />
     );
   });
 
+  // const scrollToTop = () => {
+  //   firstDialogRef.current.scrollIntoView({ behavior: 'smooth' });
+  // };
+
+  // useEffect(scrollToTop, [props.dialogs]);
+
   return (
     <StyledDialog>
+      <div ref={firstDialogRef}></div>
       <StyledDialogsList>{dialogs}</StyledDialogsList>
     </StyledDialog>
   );

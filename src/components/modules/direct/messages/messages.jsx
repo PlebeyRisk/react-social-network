@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import SendMessageForm from './send_message_form';
 import MessagesBox from './messages_box';
 import { colors } from '../../../../theme/globalStyle';
+import Preloader from '../../../common/preloader';
+import MessagesHeader from './header/messages_header';
 
 const StyledMessages = styled.div`
   flex: 1 1 auto;
@@ -13,12 +15,21 @@ const StyledMessages = styled.div`
 `;
 
 const Messages = props => {
+  if (!props.messages) return <Preloader />;
+
   return (
     <StyledMessages>
-      <MessagesBox messages={props.messages} friendId={props.friendId} />
+      {props.dialogInfo ? <MessagesHeader dialogInfo={props.dialogInfo} /> : undefined}
+
+      <MessagesBox
+        messages={props.messages}
+        friendId={props.friendId}
+        isGettingMessagesInProgress={props.isGettingMessagesInProgress}
+      />
+
       <SendMessageForm
         onSubmit={props.sendMessage}
-        isSendingMessagesInProgress={props.isSendingMessagesInProgress}
+        isSendingMessageInProgress={props.isSendingMessageInProgress}
       />
     </StyledMessages>
   );

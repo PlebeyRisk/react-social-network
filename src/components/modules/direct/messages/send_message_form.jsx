@@ -45,11 +45,10 @@ const StyledSubmit = styled.input.attrs({
 `;
 
 const SendMessageForm = props => {
-  console.log(`isSendingMessagesInProgress: ${props.isSendingMessagesInProgress}`);
   return (
     <StyledSendMessageForm onSubmit={props.handleSubmit}>
       <StyledField name="message" component="textarea" />
-      <StyledSubmit disabled={props.isSendingMessagesInProgress} />
+      <StyledSubmit disabled={props.isSendingMessageInProgress} />
     </StyledSendMessageForm>
   );
 };

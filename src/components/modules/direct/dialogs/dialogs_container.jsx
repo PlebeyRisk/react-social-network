@@ -1,32 +1,56 @@
 import React, { useEffect } from 'react';
 import Dialogs from './dialogs';
 import { connect } from 'react-redux';
-import { NavLink, withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { directSEL } from '../../../../redux/direct-selectors';
 import Preloader from '../../../common/preloader';
+import { getAllDialogs } from '../../../../redux/direct-reducer';
+import { clearIntervalThunk, setIntervalThunk } from '../../../../redux/app-reducer';
+
+const intervalName = 'dialogsUpdate';
+let intervalId;
 
 const DialogsContainer = props => {
   const friendId = Number(props.match.params.userId);
 
-  if (!friendId && props.dialogs && props.dialogs.length !== 0) {
-    return <Redirect to={'/direct/' + props.dialogs[0].id} />;
-  }
+  useEffect(() => {
+    props.setIntervalThunk(() => props.getAllDialogs(), 1000, intervalName);
 
-  if (props.isGettingDialogsInProgress || !props.dialogs) return <Preloader />;
+    intervalId = props.startingIntervals.get(intervalName);
 
-  return <Dialogs dialogs={props.dialogs} friendId={friendId} />;
+    return () => {
+      props.clearIntervalThunk(intervalId, intervalName);
+      console.log('конец');
+    };
+  }, [props.match.path]);
+
+  //if (props.isGettingDialogsInProgress || !props.dialogs) return <Preloader />;
+
+  return (
+    <Dialogs
+      dialogs={props.dialogs}
+      friendId={friendId}
+      isGettingMessagesInProgress={props.isGettingMessagesInProgress}
+    />
+  );
 };
 
 let mapStateToProps = state => {
-  const { getAllDialogs, getIsGettingDialogsInProgress } = directSEL;
+  const {
+    getAllDialogs,
+    getIsGettingDialogsInProgress,
+    getIsGettingMessagesInProgress,
+  } = directSEL;
   return {
     dialogs: getAllDialogs(state),
     isGettingDialogsInProgress: getIsGettingDialogsInProgress(state),
+    isGettingMessagesInProgress: getIsGettingMessagesInProgress(state),
+    startingIntervals: state.app.startingIntervals,
   };
 };
 
-let mapDispatchToProps = {};
+let mapDispatchToProps = { getAllDialogs, clearIntervalThunk, setIntervalThunk };
 
 export default compose(
   connect(

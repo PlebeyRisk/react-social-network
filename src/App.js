@@ -9,8 +9,9 @@ import ProfileContainer from './components/modules/profile/profile_container';
 import LoginContainer from './components/modules/login/login_container';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { initializeApp } from './redux/app-reducer';
+import { initializeApp, clearAllIntervals, setIntervalThunk} from './redux/app-reducer';
 import Preloader from './components/common/preloader';
+import { checkForTotalNewMessages } from './redux/direct-reducer';
 
 const StyledApp = styled.div`
   display: flex;
@@ -32,8 +33,14 @@ const StyledInitialStatus = styled.div`
 `;
 
 class App extends React.Component {
+
   componentDidMount() {
     this.props.initializeApp();
+    this.props.setIntervalThunk(this.props.checkForTotalNewMessages, 15000, 'checkTotalNewMessages');
+  }
+
+  componentWillUnmount() {
+    this.props.clearAllIntervals(this.props.startingIntervals);
   }
 
   render() {
@@ -46,7 +53,7 @@ class App extends React.Component {
         </StyledWrapperContent>
       </StyledApp>
     );
-    
+
     const isLogin = this.props.location.pathname.includes('login');
 
     return (
@@ -64,19 +71,22 @@ class App extends React.Component {
   }
 }
 
-let mapStateToProps = state => {
+const mapStateToProps = state => {
   return {
     initialized: state.app.initialized,
-    initializedStatus: state.app.initializedStatus
+    initializedStatus: state.app.initializedStatus,
+    startingIntervals: state.app.startingIntervals
   };
 };
 
+const mapDispatchToProps = {
+  initializeApp,
+  checkForTotalNewMessages,
+  setIntervalThunk,
+  clearAllIntervals
+};
+
 export default compose(
-  connect(
-    mapStateToProps,
-    {
-      initializeApp,
-    },
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter,
 )(App);

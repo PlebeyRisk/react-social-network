@@ -2,54 +2,77 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Direct from './direct';
-import Preloader from '../../common/preloader';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { compose } from 'redux';
-import { authSEL } from '../../../redux/auth-selectors';
-import { startChatting, getAllDialogs } from '../../../redux/direct-reducer';
 import { directSEL } from '../../../redux/direct-selectors';
+import {
+  updateInitialized,
+  getAllDialogs,
+  getMessages,
+  updateDialogsInitialized,
+  updateMessagesInitialized,
+} from '../../../redux/direct-reducer';
 
 const DirectContainer = props => {
   const friendId = props.match.params.userId;
 
-  const startChatting = () => {
-    if (props.isStartChattingInProgress) return;
-    if (!friendId) return;
-    if (props.dialogs && props.dialogs[0].id === friendId) return;
-
-    props.startChatting(friendId);
-  };
-
-  const loadDialogs = () => {
-    if (props.dialogs) return;
-    if (props.isGettingDialogsInProgress) return;
-    if (friendId) return;
-
-    props.getAllDialogs();
-  };
-
   useEffect(() => {
-    startChatting();
-    loadDialogs();
-  });
+    if (!props.isGettingMessagesInProgress && friendId !== null && friendId !== undefined) {
+      props.getMessages(friendId);
+    }
 
-  return <Direct {...props} />;
+    if (!props.isGettingDialogsInProgress && !props.dialogs) {
+      props.getAllDialogs();
+    }
+  }, [friendId]);
+
+  if (!props.initializedDialogs && props.dialogs !== null && props.dialogs !== undefined) {
+    props.updateDialogsInitialized();
+  }
+
+  if (
+    !props.initializedMessages &&
+    (!friendId || (props.messages !== null && props.messages !== undefined))
+  ) {
+    props.updateMessagesInitialized();
+  }
+
+  if (!props.initialized && props.initializedMessages && props.initializedDialogs) {
+    props.updateInitialized();
+  }
+
+  return <Direct initialized={props.initialized} />;
 };
 
 const mapStateToProps = state => {
-  const { getId } = authSEL;
-  const { getAllDialogs, getIsStartChattingInProgress, getIsGettingDialogsInProgress } = directSEL;
+  const {
+    getInitializedMessages,
+    getInitializedDialogs,
+    getInitialized,
+    getIsGettingMessagesInProgress,
+    getIsGettingDialogsInProgress,
+    getMessages,
+    getAllDialogs,
+  } = directSEL;
   return {
-    // authUserId: getId(state),
-    // dialogs: getAllDialogs(state),
-    // isStartChattingInProgress: getIsStartChattingInProgress(state),
-    // isGettingDialogsInProgress: getIsGettingDialogsInProgress(state),
+    initializedMessages: getInitializedMessages(state),
+    initializedDialogs: getInitializedDialogs(state),
+    initialized: getInitialized(state),
+    isGettingMessagesInProgress: getIsGettingMessagesInProgress(state),
+    isGettingDialogsInProgress: getIsGettingDialogsInProgress(state),
+    messages: getMessages(state),
+    dialogs: getAllDialogs(state),
+    initializedMessages: getInitializedMessages(state),
+    initializedDialogs: getInitializedDialogs(state),
   };
 };
 
 const mapDispatchToProps = {
-  startChatting,
+  updateInitialized,
+  updateDialogsInitialized,
+  updateMessagesInitialized,
   getAllDialogs,
+  getMessages,
 };
 
 export default compose(
