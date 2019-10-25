@@ -79,42 +79,39 @@ export const clearAllIntervalsAction = () => ({
 });
 
 
-export const initializeApp = () => {
-  return (dispatch) => {
-    let authPromise = dispatch(auth());
+export const initializeApp = () => async dispatch => {
     dispatch(setInititalizedStatus('авторизация пользователя'));
 
-    Promise.all([authPromise])
-      .then(() => {
-        dispatch(initializationSuccess());
-        dispatch(setInititalizedStatus(''));
-      });
-  };
+    await dispatch(auth());
+
+    dispatch(initializationSuccess());
+    dispatch(setInititalizedStatus(''));
 };
 
-export const setIntervalThunk = (func, delay, name) => {
-  return (dispatch) => {
-    func();
-    const id = setInterval(func, delay);
-    dispatch(addIntervalAction(name, id));
-    console.log('запустил ' + id);
-  };
+export const setIntervalThunk = (func, delay, name) => dispatch => {
+  func();
+  const id = setInterval(func, delay);
+
+  dispatch(addIntervalAction(name, id));
+  console.log(`===[App]: starting interval ${name} [${id}]`);
 };
 
-export const clearIntervalThunk = (id, name) => {
-  return (dispatch) => {
-    if (!id) return;
-    console.log('удалил ' + id);
-    clearInterval(id);
-    dispatch(clearIntervalAction(name));
-  };
+export const clearIntervalThunk = (id, name) => dispatch => {
+  if (!id) return;
+
+  clearInterval(id);
+
+  dispatch(clearIntervalAction(name));
+  console.log(`===[App]: clear interval ${name} [${id}]`);
 };
 
-export const clearAllIntervals = (startingIntervals) => {
-  return (dispatch) => {
-    startingIntervals.values().forEach((timerId => clearInterval(timerId)));
-    dispatch(clearAllIntervalsAction());
-  };
+export const clearAllIntervals = (startingIntervals) => dispatch => {
+
+  startingIntervals.values().forEach((timerId => clearInterval(timerId)));
+
+  dispatch(clearAllIntervalsAction());
+
+  console.log('===[App]: all interval cleared');
 };
 
 

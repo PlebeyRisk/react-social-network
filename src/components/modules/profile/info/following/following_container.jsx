@@ -16,9 +16,7 @@ const UsersFormContainer = props => {
     <UsersList
       data={data}
       elemSize="32"
-      follow={props.follow}
-      unfollow={props.unfollow}
-      isFollow={props.isFollow}
+      updateFollow={props.updateFollow}
       isFollowingInProgress={props.isFollowingInProgress}
       isFollowing
     />

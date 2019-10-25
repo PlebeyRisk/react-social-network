@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { colors } from '../../../../../theme/globalStyle';
@@ -65,32 +65,35 @@ const UserAvatar = props => {
   );
 };
 
-const User = props => {
-  const follow = () => {
-    props.follow(props.id);
-  };
+const User = ({ id, image, size, name, text, followed, updateFollow }) => {
+  const [disabled, setDisabled] = useState(false);
 
-  const unfollow = () => {
-    props.unfollow(props.id);
+  useEffect(() => {
+    setDisabled(false);
+  }, [followed]);
+
+  const onClick = followStatus => {
+    setDisabled(true);
+    updateFollow(id, followStatus);
   };
 
   return (
     <StyledUser>
-      <NavLink to={`/profile/` + props.id}>
-        <UserAvatar image={props.image} size={props.size || 50} />
+      <NavLink to={`/profile/` + id}>
+        <UserAvatar image={image} size={size || 50} />
       </NavLink>
       <StyledTextWrap>
         <StyledUserName>
-          <NavLink to={`/profile/` + props.id}>{props.name}</NavLink>
+          <NavLink to={`/profile/` + id}>{name}</NavLink>
         </StyledUserName>
-        <StyledUserText>{props.text}</StyledUserText>
+        <StyledUserText>{text}</StyledUserText>
       </StyledTextWrap>
-      {props.followed ? (
-        <StyledSubscribeBtn onClick={unfollow} disabled={props.isFollowingInProgress} isUnsub>
+      {followed ? (
+        <StyledSubscribeBtn onClick={() => onClick(false)} disabled={disabled} isUnsub>
           Отписаться
         </StyledSubscribeBtn>
       ) : (
-        <StyledSubscribeBtn onClick={follow} disabled={props.isFollowingInProgress}>
+        <StyledSubscribeBtn onClick={() => onClick(true)} disabled={disabled}>
           Подписаться
         </StyledSubscribeBtn>
       )}

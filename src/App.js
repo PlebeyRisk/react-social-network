@@ -9,9 +9,11 @@ import ProfileContainer from './components/modules/profile/profile_container';
 import LoginContainer from './components/modules/login/login_container';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { initializeApp, clearAllIntervals, setIntervalThunk} from './redux/app-reducer';
+import { initializeApp, clearAllIntervals, setIntervalThunk, clearIntervalThunk} from './redux/app-reducer';
 import Preloader from './components/common/preloader';
 import { checkForTotalNewMessages } from './redux/direct-reducer';
+import { appSEL } from './redux/app-selectors';
+import { authSEL } from './redux/auth-selectors';
 
 const StyledApp = styled.div`
   display: flex;
@@ -36,7 +38,15 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.initializeApp();
-    this.props.setIntervalThunk(this.props.checkForTotalNewMessages, 15000, 'checkTotalNewMessages');
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.isAuth && this.props.isAuth) {
+      this.props.setIntervalThunk(this.props.checkForTotalNewMessages, 15000, 'checkTotalNewMessages');
+    }
+    if (prevProps.isAuth && !this.props.isAuth) {
+      this.props.clearIntervalThunk(this.props.startingIntervals.get('checkTotalNewMessages'), 'checkTotalNewMessages');
+    }
   }
 
   componentWillUnmount() {
@@ -45,6 +55,7 @@ class App extends React.Component {
 
   render() {
     const { initialized } = this.props;
+
     if (!initialized) return (
       <StyledApp>
         <StyledWrapperContent>
@@ -72,10 +83,13 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
+  const { getInitialized, getInitializedStatus, getStartingIntervals } = appSEL;
+  const { getIsAuth } = authSEL;
   return {
-    initialized: state.app.initialized,
-    initializedStatus: state.app.initializedStatus,
-    startingIntervals: state.app.startingIntervals
+    initialized: getInitialized(state),
+    initializedStatus: getInitializedStatus(state),
+    startingIntervals: getStartingIntervals(state),
+    isAuth: getIsAuth(state),
   };
 };
 
@@ -83,6 +97,7 @@ const mapDispatchToProps = {
   initializeApp,
   checkForTotalNewMessages,
   setIntervalThunk,
+  clearIntervalThunk,
   clearAllIntervals
 };
 

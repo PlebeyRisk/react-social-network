@@ -4,6 +4,7 @@ import {
 import {
   stopSubmit
 } from 'redux-form'
+import { getFollowingUsers } from "./profile-reducer";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const UPDATE_FETCHING = 'AUTH_UPDATE_FETCHING'
@@ -90,81 +91,81 @@ export const updateFetchingCaptchaProgress = (progress) => ({
   progress
 });
 
-export const auth = () => {
-  return (dispatch) => {
-    dispatch(updateFetching(true));
+export const auth = () => async (dispatch) => {
+  dispatch(updateFetching(true));
 
-    authAPI.auth().then(data => {
-      dispatch(updateFetching(false));
+  const response = await authAPI.auth();
 
-      if (data && data.resultCode === 0) {
-        dispatch(setUserData(data.data.id, data.data.email, data.data.login));
-        dispatch(updateAuth(true));
+  dispatch(updateFetching(false));
+
+  if (response && response.resultCode === 0) {
+    const {id, email, login} = response.data;
+
+    dispatch(setUserData(id, email, login));
+    dispatch(updateAuth(true));
+    dispatch(getFollowingUsers());
+  }
+};
+
+export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
+
+  const response = await authAPI.login(email, password, rememberMe, captcha)
+
+  if (!response) return;
+
+  const {resultCode, messages} = response;
+
+  if (resultCode === 0) {
+    dispatch(auth());
+  } else if (resultCode === 10) {
+    dispatch(getCaptcha());
+    errorsHandler(messages);
+  } else {
+    errorsHandler(messages);
+  }
+
+  function errorsHandler(messages) {
+
+    let errors = {};
+
+    if (messages.includes("Incorrect anti-bot symbols")) {
+      errors = {
+        captcha: "Неправильная каптча"
       }
-    });
+    } else {
+      errors = {
+        email: "Неправильный Email или пароль",
+        password: "Неправильный Email или пароль",
+      }
+    }
+
+    dispatch(stopSubmit('login', errors));
   };
 };
 
-export const login = (email, password, rememberMe, captcha) => {
-  return (dispatch) => {
-    authAPI.login(email, password, rememberMe, captcha).then(data => {
-      if (!data) return;
-      if (data.resultCode === 0) {
-        dispatch(auth());
-      } else if (data.resultCode === 10) {
-        dispatch(getCaptcha());
-        errorsHandler(data.messages);
-      } else {
-        errorsHandler(data.messages);
-      }
+export const logout = () => async (dispatch) => {
+  dispatch(updateFetching(true));
 
-      function errorsHandler(messages) {
+  const response = await authAPI.logout();
 
-        let errors = {};
-        if (messages.includes("Incorrect anti-bot symbols")) {
-          errors = {
-            captcha: "Неправильная каптча"
-          }
-        } else {
-          errors = {
-            email: "Неправильный Email или пароль",
-            password: "Неправильный Email или пароль",
-          }
-        }
-        dispatch(stopSubmit('login', errors));
-      };
-    });
-  };
+  dispatch(updateFetching(false));
+
+  if (response && response.resultCode === 0) {
+    dispatch(setUserData(null, null, null));
+    dispatch(setCaptcha(null));
+    dispatch(updateAuth(false));
+  }
 };
 
-export const logout = () => {
-  return (dispatch) => {
-    dispatch(updateFetching(true));
-
-    authAPI.logout().then(data => {
-      dispatch(updateFetching(false));
-
-      if (data && data.resultCode === 0) {
-        dispatch(setUserData(null, null, null));
-        dispatch(setCaptcha(null));
-        dispatch(updateAuth(false));
-      }
-    });
-  };
-};
-
-export const getCaptcha = () => {
-  return (dispatch) => {
+export const getCaptcha = () => async (dispatch) => {
     dispatch(updateFetchingCaptchaProgress(true));
 
-    authAPI.getCaptcha().then(data => {
-      dispatch(updateFetchingCaptchaProgress(false));
+    const response = await authAPI.getCaptcha();
 
-      if (data === null) return;
+    dispatch(updateFetchingCaptchaProgress(false));
+    if (response === null) return;
 
-      dispatch(setCaptcha(data.url));
-    });
-  };
+    dispatch(setCaptcha(response.url));
 };
 
 export default authReducer;

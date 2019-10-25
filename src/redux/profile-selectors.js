@@ -14,10 +14,6 @@ export const getIsFollowingInProgress = (state) => {
   return state.profile.isFollowingInProgress;
 }
 
-export const getOldUserId = (state) => {
-  return state.profile.oldUserId;
-}
-
 export const getTextStatus = (state) => {
   return state.profile.textStatus;
 }
@@ -34,14 +30,11 @@ export const getIsLoadFollowingUsersInProgress = (state) => {
   return state.profile.isLoadFollowingUsersInProgress;
 }
 
-
-
 export const profileSEL = {
   getUserInfo,
   getIsFetching,
   getIsFollow,
   getIsFollowingInProgress,
-  getOldUserId,
   getTextStatus,
   getIsUpdateStatusInProgress,
   getFollowingUsers,

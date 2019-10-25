@@ -196,28 +196,28 @@ export const setTerm = (term) => ({
   term
 });
 
-export const getUsers = (currentPage, pageSize, inputValue) => {
-  return (dispatch) => {
+export const getUsers = (currentPage, pageSize, inputValue, addMethod) => async (dispatch) => {
     dispatch(updateFetching(true));
     dispatch(setLastLoadedPage(currentPage));
 
-    usersAPI.getUsers(currentPage, pageSize, inputValue).then(data => {
-      dispatch(updateFetching(false));
-      if (!data) return;
-      dispatch(setTotalCount(data.totalCount));
-      dispatch(addUsers(data.items));
-    }, (error) => {
-      dispatch(setLastLoadedPage(currentPage - 1));
-    });
-  };
+    const response = await usersAPI.getUsers(currentPage, pageSize, inputValue);
+
+    dispatch(updateFetching(false));
+    if (!response) return;
+
+    const { totalCount, items } = response;
+
+    dispatch(setTotalCount(totalCount));
+    addMethod === 'add' ? dispatch(addUsers(items)) : dispatch(setUsers(items));
+
+    // (error) => {
+    //   dispatch(setLastLoadedPage(currentPage - 1));
+    // });
 };
 
-export const clearUsers = () => {
-  return (dispatch) => {
-    dispatch(setCurrentPage(1));
-    dispatch(setLastLoadedPage(0));
-    dispatch(setUsers([]));
-  };
+export const rebootPageCount = () => dispatch => {
+  dispatch(setCurrentPage(1));
+  dispatch(setLastLoadedPage(0));
 };
 
 export default searchUsersReducer;

@@ -25,11 +25,11 @@ const isFollow = (userId = 2) => {
   return instance.get(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching isFollow(): ' + error));
 }
 
-const postFollow = (userId = 2) => {
+const follow = (userId = 2) => {
   return instance.post(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching postFollow(): ' + error));
 }
 
-const deleteFollow = (userId = 2) => {
+const unFollow = (userId = 2) => {
   return instance.delete(`follow/${userId}`).then(response => response.data, (error) => console.log('error fetching deleteFollow(): ' + error));
 }
 
@@ -120,8 +120,8 @@ export const authAPI = {
 
 export const followAPI = {
   isFollow,
-  postFollow,
-  deleteFollow
+  follow,
+  unFollow
 };
 
 export const directAPI = {

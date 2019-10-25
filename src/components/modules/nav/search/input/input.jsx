@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../../theme/globalStyle';
 import searchIcon from '../../../../../img/search.svg';
-import searchClearIcon from '../../../../../img/search-clear.svg'
-import preloaderIcon from '../../../../../img/preloader.svg'
+import searchClearIcon from '../../../../../img/search-clear.svg';
+import preloaderIcon from '../../../../../img/preloader.svg';
 
 const StyledSearchInput = styled.div`
   position: relative;
@@ -31,7 +31,7 @@ const StyledSearchIcon = styled.img.attrs({
   src: searchIcon,
   alt: 'search',
   width: 10,
-  height: 10
+  height: 10,
 })`
   position: absolute;
   top: 50%;
@@ -42,7 +42,7 @@ const StyledSearchIcon = styled.img.attrs({
 `;
 
 const StyledSearchClearButton = styled.button.attrs({
-  type: 'button'
+  type: 'button',
 })`
   position: absolute;
   top: 50%;
@@ -60,40 +60,44 @@ const StyledSearchClearButton = styled.button.attrs({
 class SearchInput extends React.Component {
   inputElem = React.createRef();
 
-  inputOnChange = (e) => {
+  inputOnChange = e => {
     this.props.updateInputValue(e.currentTarget.value);
-  }
+  };
 
   inputOnFocus = () => {
     this.props.updateInputFocus(true);
-  }
+  };
 
   inputOnBlur = () => {
     this.props.updateInputValue('');
     this.props.updateInputFocus(false);
     this.props.updateCoverHidden(false);
     this.props.updateUsersListHidden(true);
-  }
+  };
 
-  onMouseDown = (e) => {
+  onMouseDown = e => {
     e.preventDefault();
-  }
+  };
 
   componentDidUpdate() {
-    (this.props.focus) ? this.inputElem.current.focus() : this.inputElem.current.blur();
+    this.props.focus ? this.inputElem.current.focus() : this.inputElem.current.blur();
   }
 
   render() {
     return (
       <StyledSearchInput>
-        <StyledSearchIcon onMouseDown={this.onMouseDown}/>
-        <input type="text"
-               ref={this.inputElem}
-               onChange={this.inputOnChange}
-               onFocus={this.inputOnFocus}
-               onBlur={this.inputOnBlur}
-               value={this.props.value}/>
-        <StyledSearchClearButton image={this.props.usersisFetching ? preloaderIcon : searchClearIcon}/>
+        <StyledSearchIcon onMouseDown={this.onMouseDown} />
+        <input
+          type="text"
+          ref={this.inputElem}
+          onChange={this.inputOnChange}
+          onFocus={this.inputOnFocus}
+          onBlur={this.inputOnBlur}
+          value={this.props.value}
+        />
+        <StyledSearchClearButton
+          image={this.props.usersisFetching ? preloaderIcon : searchClearIcon}
+        />
       </StyledSearchInput>
     );
   }

@@ -21,7 +21,6 @@ const DialogsContainer = props => {
 
     return () => {
       props.clearIntervalThunk(intervalId, intervalName);
-      console.log('конец');
     };
   }, [props.match.path]);
 
@@ -37,11 +36,7 @@ const DialogsContainer = props => {
 };
 
 let mapStateToProps = state => {
-  const {
-    getAllDialogs,
-    getIsGettingDialogsInProgress,
-    getIsGettingMessagesInProgress,
-  } = directSEL;
+  const { getAllDialogs, getIsGettingDialogsInProgress, getIsGettingMessagesInProgress } = directSEL;
   return {
     dialogs: getAllDialogs(state),
     isGettingDialogsInProgress: getIsGettingDialogsInProgress(state),

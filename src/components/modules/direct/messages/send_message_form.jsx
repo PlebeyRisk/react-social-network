@@ -45,9 +45,15 @@ const StyledSubmit = styled.input.attrs({
 `;
 
 const SendMessageForm = props => {
+  const onKeyDown = e => {
+    if (e.keyCode === 13) {
+      props.handleSubmit();
+    }
+  };
+
   return (
     <StyledSendMessageForm onSubmit={props.handleSubmit}>
-      <StyledField name="message" component="textarea" />
+      <StyledField name="message" component="textarea" autoFocus onKeyDown={onKeyDown} />
       <StyledSubmit disabled={props.isSendingMessageInProgress} />
     </StyledSendMessageForm>
   );

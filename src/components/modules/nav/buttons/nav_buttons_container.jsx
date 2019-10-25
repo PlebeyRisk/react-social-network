@@ -4,13 +4,7 @@ import NavButtons from './nav_buttons';
 import { directSEL } from '../../../../redux/direct-selectors';
 
 const NavButtonsContainer = props => {
-  return (
-    <NavButtons
-      newMessagesInDialogsCount={props.newMessagesInDialogsCount}
-      newMessagesTotalCount={props.newMessagesTotalCount}
-      isTotalCheckingNewMessagesInProgress={props.isTotalCheckingNewMessagesInProgress}
-    />
-  );
+  return <NavButtons newMessagesTotalCount={props.newMessagesTotalCount} />;
 };
 
 let mapStateToProps = state => {

@@ -6,6 +6,7 @@ import { colors } from '../../../../theme/globalStyle';
 import UserStatus from './user_status/user_status';
 import Following from './following/following';
 import { NavLink } from 'react-router-dom';
+import Preloader from '../../../common/preloader';
 
 const StyledProfileInfo = styled.header`
   display: flex;
@@ -75,6 +76,10 @@ const StyledSubscribeBtn = styled.button.attrs({
   color: ${colors.light};
 `;
 
+const StyledBtn = styled(StyledSubscribeBtn)`
+  width: 135px;
+`;
+
 const StyledOptionsBtnIcon = styled.span`
   display: block;
   width: 24px;
@@ -109,18 +114,16 @@ const UserInfo = props => {
       <StyledInfoSection>
         <StyledName>{fullName}</StyledName>
         {!isAuthUser ? (
-          !props.isFollow ? (
-            <StyledSubscribeBtn
-              onClick={() => props.follow(userId)}
-              disabled={props.isFollowingInProgress}
-            >
+          props.isLoadFollowingUsersInProgress ? (
+            <StyledBtn disabled>
+              <Preloader size="20" />
+            </StyledBtn>
+          ) : !props.isFollow ? (
+            <StyledSubscribeBtn onClick={() => props.follow(userId)} disabled={props.isFollowingInProgress}>
               Подписаться
             </StyledSubscribeBtn>
           ) : (
-            <StyledSubscribeBtn
-              onClick={() => props.unfollow(userId)}
-              disabled={props.isFollowingInProgress}
-            >
+            <StyledSubscribeBtn onClick={() => props.unfollow(userId)} disabled={props.isFollowingInProgress}>
               Отписаться
             </StyledSubscribeBtn>
           )
@@ -155,7 +158,7 @@ const UserInfo = props => {
             unfollow={props.unfollow}
             isFollow={props.isFollow}
             isFollowingInProgress={props.isFollowingInProgress}
-            updateFollowingUsers={props.updateFollowingUsers}
+            setFollowingUsers={props.setFollowingUsers}
           />
         ) : (
           undefined

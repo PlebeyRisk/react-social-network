@@ -31,12 +31,12 @@ const MessagesContainer = props => {
   }, [friendId]);
 
   const sendMessage = formData => {
+    console.log(formData);
     if (!formData.message || formData.message.trim().length === 0) return;
     props.sendMessage(friendId, formData.message);
 
     const isDialogsEmpty = !props.dialogs || (props.dialogs && !props.dialogs.length);
-    const isFriendDialogsFirst =
-      !isDialogsEmpty && (!friendId || (friendId && props.dialogs[0].id === friendId));
+    const isFriendDialogsFirst = !isDialogsEmpty && (!friendId || (friendId && props.dialogs[0].id === friendId));
 
     if (!isFriendDialogsFirst && !props.isStartChattingInProgress) {
       props.startChatting(friendId);
@@ -52,6 +52,10 @@ const MessagesContainer = props => {
   };
 
   const dialogInfo = getDialogInfoById(friendId);
+
+  if (!dialogInfo && !props.isStartChattingInProgress) {
+    props.startChatting(friendId);
+  }
 
   return (
     <Messages

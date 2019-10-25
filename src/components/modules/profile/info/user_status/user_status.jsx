@@ -43,10 +43,6 @@ const UserStatus = props => {
     props.setTextStatus(newStatus);
   };
 
-  const preventDefault = e => {
-    e.preventDefault();
-  };
-
   return (
     <StyledUserStatus>
       {props.isUpdateStatusInProgress ? (
@@ -58,10 +54,7 @@ const UserStatus = props => {
       )}
 
       {!editMode ? (
-        <StyledTextStatus
-          onClick={activateEditMode}
-          disabled={!props.isAuthUser || props.isUpdateStatusInProgress}
-        >
+        <StyledTextStatus onClick={activateEditMode} disabled={!props.isAuthUser || props.isUpdateStatusInProgress}>
           {props.textStatus || (props.isAuthUser ? 'изменить статус' : '')}
         </StyledTextStatus>
       ) : (

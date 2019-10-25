@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../../../theme/globalStyle';
 import dialogsIcon from '../../../../img/dialogs.svg';
@@ -22,7 +22,7 @@ const StyledDialogsIcon = styled.div`
   opacity: 0.5;
 `;
 
-const EmptyMessagesPage = props => {
+const EmptyMessagesPage = () => {
   return (
     <StyledEmptyMessagesPage>
       <StyledDialogsIcon />
@@ -31,4 +31,4 @@ const EmptyMessagesPage = props => {
   );
 };
 
-export default EmptyMessagesPage;
+export default memo(EmptyMessagesPage);

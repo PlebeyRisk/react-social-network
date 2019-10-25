@@ -182,96 +182,85 @@ export const updateTotalCheckingNewMessagesProgress = (progress) => ({
   progress
 });
 
-export const startChatting = (userId) => {
-  return dispatch => {
-    dispatch(updateStartChattingProgress(true));
-    console.log(`start chat with `+ userId);
+export const startChatting = (userId) => async (dispatch) => {
+  dispatch(updateStartChattingProgress(true));
+  console.log(`start chat with `+ userId);
 
-    directAPI.startChatting(userId).then(data => {
-      dispatch(updateStartChattingProgress(false));
-      //console.log(data);
-      if (data && data.resultCode === 0) {
-        dispatch(getAllDialogs());
-      }
-    });
-  };
+  const response = await directAPI.startChatting(userId);
+
+  dispatch(updateStartChattingProgress(false));
+
+  if (response && response.resultCode === 0) {
+    dispatch(getAllDialogs());
+  }
 };
 
-export const getAllDialogs = () => {
-  return dispatch => {
-    dispatch(updateGettingDialogsProgress(true));
-    console.log(`getting all dialogs`);
+export const getAllDialogs = () => async (dispatch) => {
+  dispatch(updateGettingDialogsProgress(true));
+  console.log(`getting all dialogs`);
 
-    directAPI.getAllDialogs().then(data => {
-      dispatch(updateGettingDialogsProgress(false));
-      if (!data) return;
-      // console.log(data);
+  const response = await directAPI.getAllDialogs();
 
-      // const sortDialogs = data;
-      // sortDialogs.sort(dialog => dialog.hasNewMessages);
+  dispatch(updateGettingDialogsProgress(false));
+  if (!response) return;
 
-      dispatch(setDialogs(data));
-    });
-  };
+  dispatch(setDialogs(response));
 };
 
-export const sendMessage = (userId, message) => {
-  return dispatch => {
-    dispatch(updateSendingMessageProgress(true));
-    console.log(`sending message`);
+export const sendMessage = (userId, message) => async (dispatch) => {
+  dispatch(updateSendingMessageProgress(true));
+  console.log(`sending message`);
 
-    directAPI.sendMessage(userId, message).then(data => {
-      dispatch(updateSendingMessageProgress(false));
-      if (data && data.resultCode === 0) {
-        dispatch(reset('sendMessage'));
-        dispatch(addMessage(data.data.message));
-      } else {
-        dispatch(stopSubmit({message: 'не удалось отправить сообщение'}));
-      }
-    });
-  };
+  const response = await directAPI.sendMessage(userId, message);
+
+  dispatch(updateSendingMessageProgress(false));
+
+  if (response && response.resultCode === 0) {
+    dispatch(reset('sendMessage'));
+    dispatch(addMessage(response.data.message));
+  } else {
+    dispatch(stopSubmit({message: 'не удалось отправить сообщение'}));
+  }
 };
 
-export const getMessages = (userId) => {
-  return dispatch => {
-    dispatch(updateGettingMessagesProgress(true));
-    console.log(`getting messages`);
+export const getMessages = (userId) => async (dispatch) => {
+  dispatch(updateGettingMessagesProgress(true));
+  console.log(`getting messages ${userId}`);
 
-    directAPI.getMessages(userId).then(data => {
-      dispatch(updateGettingMessagesProgress(false));
-      if (!data) return;
-      dispatch(setMessages(data.items));
-    });
-  };
+  const response = await directAPI.getMessages(userId);
+
+  dispatch(updateGettingMessagesProgress(false));
+  if (!response) return;
+
+  dispatch(setMessages(response.items));
 };
 
-export const checkForTotalNewMessages = () => {
-  return dispatch => {
-    dispatch(updateTotalCheckingNewMessagesProgress(true));
-    // console.log(`checking for new messages`);
+export const checkForTotalNewMessages = () => async (dispatch) => {
+  dispatch(updateTotalCheckingNewMessagesProgress(true));
+  console.log(`checking for new messages`);
 
-    directAPI.getAllDialogs().then(data => {
-      dispatch(updateTotalCheckingNewMessagesProgress(false));
-      if (!data) return;
+  const response = await directAPI.getAllDialogs();
 
-      const dialogsWithNewMessages = data.filter((dialog) => dialog.hasNewMessages);
+  dispatch(updateTotalCheckingNewMessagesProgress(false));
+  if (!response) return;
 
-      if (dialogsWithNewMessages.length) {
-        let totalCount = 0;
-        dialogsWithNewMessages.forEach((dialog) => {
-          totalCount += dialog.newMessagesCount;
-        });
+  const dialogsWithNewMessages = response.filter((dialog) => dialog.hasNewMessages);
 
-        dispatch(setNewMessagesInDialogsCount(dialogsWithNewMessages.length));
-        dispatch(setNewMessagesTotalCount(totalCount));
+  if (dialogsWithNewMessages.length) {
 
-        // console.log(`dialogsNewMessages: ${dialogsWithNewMessages.length}, totalNewMessages: ${totalCount}`);
-      } else {
-        dispatch(setNewMessagesInDialogsCount(0));
-        dispatch(setNewMessagesTotalCount(0));
-      }
+    let totalCount = 0;
+    dialogsWithNewMessages.forEach((dialog) => {
+      totalCount += dialog.newMessagesCount;
     });
-  };
+
+    dispatch(setNewMessagesInDialogsCount(dialogsWithNewMessages.length));
+    dispatch(setNewMessagesTotalCount(totalCount));
+
+    //console.log(`dialogsNewMessages: ${dialogsWithNewMessages.length}, totalNewMessages: ${totalCount}`);
+  } else {
+    dispatch(setNewMessagesInDialogsCount(0));
+    dispatch(setNewMessagesTotalCount(0));
+  }
 }
 
 export default directReducer;

@@ -5,25 +5,25 @@ import {
   setCurrentPage,
   setTerm,
   getUsers,
-  clearUsers,
+  rebootPageCount,
 } from '../../../../../redux/search-users-reducer';
 import SearchUsersForm from './search_users_form';
 import { usersSEL } from '../../../../../redux/search-users-selectors';
 
 const UsersFormContainer = props => {
-  const loadUsers = () => {
+  const loadUsers = addMethod => {
     if (props.isFetching) return;
-    props.getUsers(props.currentPage, props.pageSize, props.inputValue);
+    props.getUsers(props.currentPage, props.pageSize, props.inputValue, addMethod);
   };
 
   useEffect(() => {
     if (props.term !== props.inputValue) {
       props.setTerm(props.inputValue);
-      props.clearUsers();
+      props.rebootPageCount();
     }
 
     if (props.currentPage > props.lastLoadedPage) {
-      loadUsers();
+      props.lastLoadedPage === 0 ? loadUsers('set') : loadUsers('add');
     }
   }, [props]);
 
@@ -69,5 +69,5 @@ let mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { updateUsersListHidden, setCurrentPage, setTerm, getUsers, clearUsers },
+  { updateUsersListHidden, setCurrentPage, setTerm, getUsers, rebootPageCount },
 )(UsersFormContainer);

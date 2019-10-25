@@ -6,8 +6,8 @@ import {
   follow,
   unfollow,
   setTextStatus,
-  getFollowingUsers,
   clearFollowingUsers,
+  setFollowingUsers,
 } from '../../../redux/profile-reducer';
 import { withRouter } from 'react-router-dom';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
@@ -25,44 +25,36 @@ class ProfileContainer extends React.Component {
     this.props.loadUser(this.props.match.params.userId || this.props.authUserId || 2);
   };
 
-  updateFollowingUsers = () => {
-    this.props.getFollowingUsers(1);
-  };
-
   componentDidMount() {
     this.loadUserInfo();
-    this.updateFollowingUsers();
 
-    // let i = 2;
+    // let i = 3858;
     // let idTimer = setInterval(() => {
     //   this.props.follow(i);
     //   i++;
     //   console.log(i);
-    //   if (i === 50) {
+    //   if (i === 4877) {
     //     clearInterval(idTimer);
     //   }
-    // }, 1000);
+    // }, 500);
   }
 
   componentDidUpdate(prevProps) {
-    const prevId = prevProps.match.params.userId;
+    const prevId = Number(prevProps.match.params.userId);
     const newId = Number(this.props.match.params.userId);
 
     if (prevProps.match != this.props.match) {
       this.loadUserInfo();
-      if (isNaN(newId)) {
-        this.updateFollowingUsers();
-      }
     }
 
     if (!prevId && !newId) return;
-    if (prevId == newId) return;
+    if (prevId === newId) return;
 
     this.loadUserInfo();
   }
 
   render() {
-    return <Profile {...this.props} updateFollowingUsers={this.updateFollowingUsers} />;
+    return <Profile {...this.props} />;
   }
 }
 
@@ -72,7 +64,6 @@ let mapStateToProps = state => {
     getIsFetching,
     getIsFollow,
     getIsFollowingInProgress,
-    getOldUserId,
     getTextStatus,
     getIsUpdateStatusInProgress,
     getFollowingUsers,
@@ -83,7 +74,6 @@ let mapStateToProps = state => {
     isFetching: getIsFetching(state),
     isFollow: getIsFollow(state),
     isFollowingInProgress: getIsFollowingInProgress(state),
-    oldUserId: getOldUserId(state),
     textStatus: getTextStatus(state),
     isUpdateStatusInProgress: getIsUpdateStatusInProgress(state),
     followingUsers: getFollowingUsers(state),
@@ -99,8 +89,8 @@ let mapDispatchToProps = {
   unfollow,
   setTextStatus,
   logout,
-  getFollowingUsers,
   clearFollowingUsers,
+  setFollowingUsers,
 };
 
 export default compose(

@@ -95,8 +95,8 @@ const Dialog = props => {
 
   const newMessagesCount = props.newMessagesCount > 99 ? '99+' : props.newMessagesCount;
 
-  const StyledDialog = props.isGettingMessagesInProgress ? StyledDiv : StyledNavLink;
-
+  // const StyledDialog = props.isGettingMessagesInProgress ? StyledDiv : StyledNavLink;
+  const StyledDialog = StyledNavLink;
   return (
     <StyledDialog
       to={`/direct/` + props.userId}

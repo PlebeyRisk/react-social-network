@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-awesome-modal';
 import { colors } from '../../../../../theme/globalStyle';
 import Preloader from '../../../../common/preloader';
 import closeIcon from '../../../../../img/close.svg';
 import UsersFormContainer from './following_container';
+import { getObjectsOfArrayByProperty } from '../../../../../utils/helpers/object-helpers';
 
 const StyledFollowing = styled.div``;
 
@@ -42,6 +43,7 @@ const StyledHeader = styled.div`
 `;
 
 const StyledBody = styled.div`
+  padding: 0 10px;
   width: 100%;
   height: 355px;
   overflow-y: auto;
@@ -55,16 +57,40 @@ const StyledContent = styled.div`
 `;
 
 const Following = props => {
-  let [visibleModalMode, setVisibleModalMode] = useState(false);
+  const [visibleModalMode, setVisibleModalMode] = useState(false);
+  // const [localFollowingUsers, setLocalFollowingUsers] = useState([]);
+
+  // const updateLocalFollowingUsers = () => {
+  //   const changedUsers = compareArraysByInOutObj(localFollowingUsers, props.followingUsers, 'out');
+  //   if (changedUsers.length === 0) return;
+  //   const lastChangedUser = changedUsers[changedUsers.length - 1];
+  //   console.log(lastChangedUser);
+  //   setLocalFollowingUsers([
+  //     ...updateObjectInArray(localFollowingUsers, lastChangedUser.id, 'id', { followed: !lastChangedUser.followed }),
+  //   ]);
+  // };
+
+  // useEffect(() => {
+  //   updateLocalFollowingUsers();
+  // }, [props.followingUsers]);
+
+  const clearUnfollowingUsers = () => {
+    props.setFollowingUsers([...getObjectsOfArrayByProperty(props.followingUsers, false, 'followed', 'out')]);
+  };
 
   const openModal = () => {
     setVisibleModalMode(true);
   };
 
   const closeModal = () => {
-    props.updateFollowingUsers();
+    clearUnfollowingUsers();
     setVisibleModalMode(false);
   };
+
+  const updateFollow = (userId, status) => {
+    status ? props.follow(userId, true) : props.unfollow(userId, true);
+  };
+
   return (
     <StyledFollowing>
       {props.isLoadFollowingUsersInProgress ? (
@@ -74,22 +100,14 @@ const Following = props => {
           <StyledNumber>{props.followingUsers.length}</StyledNumber>подписок
         </StyledDiv>
       )}
-      <Modal
-        visible={visibleModalMode}
-        width="400"
-        height="400"
-        effect="fadeInUp"
-        onClickAway={closeModal}
-      >
+      <Modal visible={visibleModalMode} width="400" height="400" effect="fadeInUp" onClickAway={closeModal}>
         <StyledContent>
           <StyledCloseButton onClick={closeModal} />
           <StyledHeader>Ваши подписки</StyledHeader>
           <StyledBody>
             <UsersFormContainer
               users={props.followingUsers}
-              follow={props.follow}
-              unfollow={props.unfollow}
-              isFollow={props.isFollow}
+              updateFollow={updateFollow}
               isFollowingInProgress={props.isFollowingInProgress}
             />
           </StyledBody>

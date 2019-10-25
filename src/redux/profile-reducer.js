@@ -3,22 +3,22 @@ import {
   profileAPI,
   usersAPI
 } from '../api/api';
+import { hasObjectInArrayByProperty, deleteObjectsInArrayByProperty, updateObjectInArray } from '../utils/helpers/object-helpers';
 
 const SET_USER_INFO = 'SET_USER_INFO';
 const UPDATE_FETCHING = 'PROFILE_UPDATE_FETCHING';
 const UPDATE_FOLLOW = 'UPDATE_FOLLOW';
 const UPDATE_FOLLOWING_PROGRESS = 'UPDATE_FOLLOWING_PROGRESS';
-const UPDATE_OLD_USER_ID = 'UPDATE_OLD_USER_ID';
 const UPDATE_TEXT_STATUS = 'UPDATE_TEXT_STATUS';
 const UPDATE_STATUS_PROGRESS = 'UPDATE_STATUS_PROGRESS';
 const ADD_FOLLOWING_USERS = 'ADD_FOLLOWING_USERS';
 const CLEAR_FOLLOWING_USERS = 'CLEAR_FOLLOWING_USERS';
+const SET_FOLLOWING_USERS = 'SET_FOLLOWING_USERS'
 const UPDATE_LOAD_FOLLOWING_USERS_PROGRESS = 'UPDATE_LOAD_FOLLOWING_USERS_PROGRESS';
-const UPDATE_USER_FOLLOW_STATUS = 'UPDATE_USER_FOLLOW_STATUS';
+const UPDATE_IS_FOLLOW = 'UPDATE_IS_FOLLOW';
 
 const initialState = {
   userInfo: null,
-  oldUserId: null,
   isFetching: false,
   isFollow: false,
   isFollowingInProgress: false,
@@ -30,86 +30,85 @@ const initialState = {
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_USER_INFO: {
-      let stateCopy = {
+    case SET_USER_INFO:
+      return {
         ...state,
         userInfo: action.userInfo,
       };
-      return stateCopy;
-    }
-    case UPDATE_FETCHING: {
-      let stateCopy = {
+    case UPDATE_FETCHING:
+      return {
         ...state,
         isFetching: action.isFetching,
       };
-      return stateCopy;
-    }
-    case UPDATE_FOLLOW: {
-      let stateCopy = {
+    case UPDATE_FOLLOW:
+      let followingUsers = state.followingUsers;
+
+      if (!action.onlyChangeStatus) {
+        if (action.status) {
+          const {fullName, photos} = state.userInfo;
+
+          const userObj = {
+            name: fullName,
+            id: action.id,
+            photos: photos,
+            status: state.textStatus,
+            followed: action.status,
+            uniqueUrlName: null
+          };
+
+          followingUsers.unshift(userObj);
+        } else {
+          followingUsers = [...deleteObjectsInArrayByProperty(followingUsers, Number(action.id), "id")];
+        }
+      } else {
+        followingUsers = updateObjectInArray(followingUsers, action.id, "id", {followed: action.status});
+      }
+
+      return {
         ...state,
-        isFollow: action.isFollow,
+        followingUsers: [...followingUsers],
+        isFollow: action.status
       };
-      return stateCopy;
-    }
-    case UPDATE_FOLLOWING_PROGRESS: {
-      let stateCopy = {
+    case UPDATE_IS_FOLLOW:
+      return {
+        ...state,
+        isFollow: hasObjectInArrayByProperty(state.followingUsers, Number(action.userId), "id")
+      };
+    case UPDATE_FOLLOWING_PROGRESS:
+      return {
         ...state,
         isFollowingInProgress: action.progress,
       };
-      return stateCopy;
-    }
-    case UPDATE_OLD_USER_ID: {
-      let stateCopy = {
-        ...state,
-        oldUserId: action.oldUserId,
-      };
-      return stateCopy;
-    }
-    case UPDATE_TEXT_STATUS: {
-      let stateCopy = {
+    case UPDATE_TEXT_STATUS:
+      return {
         ...state,
         textStatus: action.status,
       };
-      return stateCopy;
-    }
-    case UPDATE_STATUS_PROGRESS: {
-      let stateCopy = {
+    case UPDATE_STATUS_PROGRESS:
+      return {
         ...state,
         isUpdateStatusInProgress: action.progress,
       };
-      return stateCopy;
-    }
-    case CLEAR_FOLLOWING_USERS: {
-      let stateCopy = {
+    case CLEAR_FOLLOWING_USERS:
+      return {
         ...state,
         followingUsers: [],
       };
-      return stateCopy;
-    }
-    case ADD_FOLLOWING_USERS: {
-      let stateCopy = {
+    case ADD_FOLLOWING_USERS:
+      return {
         ...state,
         followingUsers: [...state.followingUsers, ...action.users],
       };
-      return stateCopy;
-    }
-    case UPDATE_LOAD_FOLLOWING_USERS_PROGRESS: {
-      let stateCopy = {
+    case SET_FOLLOWING_USERS:
+      return {
+        ...state,
+        followingUsers: [...action.users],
+      };
+    case UPDATE_LOAD_FOLLOWING_USERS_PROGRESS:
+      return {
         ...state,
         isLoadFollowingUsersInProgress: action.progress,
       };
-      return stateCopy;
-    }
-    case UPDATE_USER_FOLLOW_STATUS: {
-      let stateCopy = {
-        ...state
-      };
-      stateCopy.followingUsers.forEach(user => {
-        if (user.id != action.data.userId) return;
-        user.followed = action.data.status;
-      });
-      return stateCopy;
-    }
     default:
       return state;
   }
@@ -123,17 +122,17 @@ export const updateFetching = isFetching => ({
   type: UPDATE_FETCHING,
   isFetching,
 });
-export const updateFollow = isFollow => ({
+export const updateFollow = (id, status, onlyChangeStatus) => ({
   type: UPDATE_FOLLOW,
-  isFollow,
+  id, status, onlyChangeStatus
+});
+export const updateIsFollow = (userId) => ({
+  type: UPDATE_IS_FOLLOW,
+  userId
 });
 export const updateFollowingProgress = progress => ({
   type: UPDATE_FOLLOWING_PROGRESS,
   progress,
-});
-export const updateOldUserId = oldUserId => ({
-  type: UPDATE_OLD_USER_ID,
-  oldUserId,
 });
 export const updateTextStatus = status => ({
   type: UPDATE_TEXT_STATUS,
@@ -150,126 +149,103 @@ export const addFollowingUsers = users => ({
 export const clearFollowingUsers = () => ({
   type: CLEAR_FOLLOWING_USERS
 });
+export const setFollowingUsers = users => ({
+  type: SET_FOLLOWING_USERS,
+  users
+});
 export const updateLoadFollowingUsersProgress = progress => ({
   type: UPDATE_LOAD_FOLLOWING_USERS_PROGRESS,
   progress
 });
 
-export const updateUserFollowStatus = (userId, status) => ({
-  type: UPDATE_USER_FOLLOW_STATUS,
-  data: {userId,
-  status}
-});
+export const loadUser = userId => async dispatch => {
+  const loadTextStatus = async () => {
+    const response = await profileAPI.getTextStatus(userId);
 
-export const loadUser = userId => {
-  return dispatch => {
-    const loadFollowStatus = () => {
-      followAPI.isFollow(userId).then(data => {
-        if (data === undefined) return;
+    if (response === undefined) return;
 
-        dispatch(updateFollow(data));
-      });
-    };
-
-    const loadTextStatus = () => {
-      profileAPI.getTextStatus(userId).then(data => {
-        if (data === undefined) return;
-
-        dispatch(updateTextStatus(data));
-      });
-    };
-
-    loadFollowStatus();
-    loadTextStatus();
-
-    dispatch(updateFetching(true));
-
-    profileAPI.getUserInfo(userId).then(data => {
-      dispatch(updateFetching(false));
-
-      if (!data) return;
-
-      dispatch(setUserInfo(data));
-    });
+    dispatch(updateTextStatus(response));
   };
+
+  loadTextStatus();
+
+  dispatch(updateIsFollow(userId));
+
+  dispatch(updateFetching(true));
+
+  const response = await profileAPI.getUserInfo(userId);
+  console.log(response);
+  dispatch(updateFetching(false));
+  if (!response) return;
+
+  dispatch(setUserInfo(response));
 };
 
-export const follow = userId => {
-  return dispatch => {
-    dispatch(updateFollowingProgress(true));
+const followUnfollowFlow = async (dispatch, userId, apiMethod, status, onlyChangeStatus) => {
+  dispatch(updateFollowingProgress(true));
 
-    followAPI.postFollow(userId).then(data => {
-      dispatch(updateFollowingProgress(false));
+  const response = await apiMethod(userId);
 
-      if (data && data.resultCode === 0) {
-        dispatch(updateUserFollowStatus(userId, true));
-        console.log(`done`);
-        dispatch(updateFollow(true));
-      }
-    });
-  };
+  dispatch(updateFollowingProgress(false));
+
+  if (response && response.resultCode === 0) {
+    dispatch(updateFollow(userId, status, onlyChangeStatus));
+  }
 };
 
-export const unfollow = (userId) => {
-  return dispatch => {
-    dispatch(updateFollowingProgress(true));
-  
-    followAPI.deleteFollow(userId).then(data => {
-      dispatch(updateFollowingProgress(false));
-
-      if (data && data.resultCode === 0) {
-        dispatch(updateUserFollowStatus(userId, false));
-        console.log(`done`);
-        dispatch(updateFollow(false));
-      }
-    });
-  };
+export const follow = (userId, onlyChangeStatus = false) => async dispatch => {
+  followUnfollowFlow(dispatch, userId, followAPI.follow.bind(followAPI), true, onlyChangeStatus);
 };
 
-export const setTextStatus = status => {
-  return dispatch => {
-    dispatch(updateStatusProgress(true));
-
-    profileAPI.updateStatus(status).then(data => {
-      dispatch(updateStatusProgress(false));
-      if (data && data.resultCode === 0) {
-        dispatch(updateTextStatus(status));
-      }
-    });
-  };
+export const unfollow = (userId, onlyChangeStatus = false) => async dispatch => {
+  followUnfollowFlow(dispatch, userId, followAPI.unFollow.bind(followAPI), false, onlyChangeStatus);
 };
 
-export const getFollowingUsers = (page) => {
-  return dispatch => {
-    if (page === 1) {
-      dispatch(clearFollowingUsers());
-      dispatch(updateLoadFollowingUsersProgress(true));
-    }
+export const setTextStatus = status => async dispatch => {
+  dispatch(updateStatusProgress(true));
 
-    usersAPI.getUsers(page, 100).then(data => {
-      if (!data) {
-        dispatch(updateLoadFollowingUsersProgress(false));
-        return;
-      }
+  const response = await profileAPI.updateStatus(status);
 
-      let followingUsers = [];
-      data.items.forEach(user => {
-        if (!user.followed) return;
-        followingUsers.push(user);
-      });
+  dispatch(updateStatusProgress(false));
 
-      if (followingUsers.length != 0) {
-        dispatch(addFollowingUsers(followingUsers));
-      }
+  if (response && response.resultCode === 0) {
+    dispatch(updateTextStatus(status));
+  }
+};
 
-      const totalPage = Math.ceil(data.totalCount / 100);
-      if (page <= totalPage) {
-        dispatch(getFollowingUsers(page + 1, data.totalCount))
-      } else {        
-        dispatch(updateLoadFollowingUsersProgress(false));
-      }
-    });
-  };
+export const getFollowingUsers = (page = 1) => async dispatch => {
+  if (page === 1) {
+    dispatch(clearFollowingUsers());
+    dispatch(updateLoadFollowingUsersProgress(true));
+  }
+
+  const response = await usersAPI.getUsers(page, 100);
+
+  if (!response) {
+    dispatch(updateLoadFollowingUsersProgress(false));
+    return;
+  }
+
+  let followingUsers = [];
+
+  response.items.forEach(user => {
+    if (!user.followed) return;
+
+    followingUsers.push(user);
+  });
+
+  if (followingUsers.length != 0) {
+    dispatch(addFollowingUsers(followingUsers));
+  }
+
+  const { totalCount } = response;
+  const totalPage = Math.ceil(totalCount / 100);
+
+  if (page <= totalPage) {
+    dispatch(getFollowingUsers(page + 1, totalCount))
+  } else {
+    dispatch(updateLoadFollowingUsersProgress(false));
+  }
 };
 
 export default profileReducer;

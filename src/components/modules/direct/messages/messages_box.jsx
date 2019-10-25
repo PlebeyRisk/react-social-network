@@ -46,6 +46,7 @@ const MessagesBox = props => {
         senderName={senderName}
         viewed={viewed}
         friendId={props.friendId}
+        key={index}
       />
     );
   });
@@ -54,7 +55,7 @@ const MessagesBox = props => {
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(scrollToBottom, [props.friendId]);
+  useEffect(scrollToBottom, [props.friendId, props.messages.length]);
 
   return (
     <StyledMessagesBox>

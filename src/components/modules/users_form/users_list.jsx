@@ -19,9 +19,7 @@ const UsersList = props => {
         image={user.image || defaultImage}
         size={props.elemSize}
         followed={user.followed}
-        follow={props.follow}
-        unfollow={props.unfollow}
-        isFollow={props.isFollow}
+        updateFollow={props.updateFollow}
         isFollowingInProgress={props.isFollowingInProgress}
         key={index}
       />

@@ -27,7 +27,7 @@ const StyledReceivedMessage = styled(StyledMessage)`
 
 const Message = props => {
   const isSentMessage = props.friendId !== props.senderId;
-
+  console.log(props.body);
   return (
     <StyledWrap viewed={props.viewed}>
       {isSentMessage ? (
