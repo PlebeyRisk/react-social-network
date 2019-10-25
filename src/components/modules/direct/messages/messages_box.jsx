@@ -21,19 +21,19 @@ const StyledMessagesWrapper = styled.div`
 
 const MessagesBox = props => {
   const messagesEndRef = useRef(null);
+  const messagesLength = props.messages === null ? 0 : props.messages.length;
+
+  const scrollToBottom = () => {
+    if (!messagesLength) return;
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(scrollToBottom, [props.friendId, messagesLength]);
+
+  if (props.messages === null) return <Preloader />;
 
   const messages = props.messages.map((message, index) => {
-    const {
-      addedAt,
-      body,
-      id,
-      isSpam,
-      recepientId,
-      recepientName,
-      senderId,
-      senderName,
-      viewed,
-    } = message;
+    const { addedAt, body, id, isSpam, recepientId, recepientName, senderId, senderName, viewed } = message;
     return (
       <Message
         addedAt={addedAt}
@@ -50,12 +50,6 @@ const MessagesBox = props => {
       />
     );
   });
-
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(scrollToBottom, [props.friendId, props.messages.length]);
 
   return (
     <StyledMessagesBox>

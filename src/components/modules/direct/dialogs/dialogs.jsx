@@ -15,14 +15,7 @@ const Dialogs = props => {
   const firstDialogRef = useRef(null);
 
   const dialogs = props.dialogs.map((dialog, index) => {
-    const {
-      id,
-      userName,
-      lastDialogActivityDate,
-      lastUserActivityDate,
-      hasNewMessages,
-      newMessagesCount,
-    } = dialog;
+    const { id, userName, lastDialogActivityDate, lastUserActivityDate, hasNewMessages, newMessagesCount } = dialog;
     return (
       <Dialog
         userId={id}
@@ -39,11 +32,11 @@ const Dialogs = props => {
     );
   });
 
-  // const scrollToTop = () => {
-  //   firstDialogRef.current.scrollIntoView({ behavior: 'smooth' });
-  // };
+  const scrollToTop = () => {
+    firstDialogRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
 
-  // useEffect(scrollToTop, [props.dialogs]);
+  // useEffect(scrollToTop, [props.]);
 
   return (
     <StyledDialog>

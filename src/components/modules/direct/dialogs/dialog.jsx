@@ -10,7 +10,7 @@ const StyledDiv = styled.div`
   padding: 10px 10px;
   width: 100%;
   text-decoration: none;
-  background-color: ${props => (props.active ? 'rgba(0, 0, 0, 0.07)' : undefined)};
+  background-color: ${props => (props.active === 'true' ? 'rgba(0, 0, 0, 0.07)' : undefined)};
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -20,7 +20,7 @@ const StyledNavLink = styled(NavLink)`
   padding: 10px 10px;
   width: 100%;
   text-decoration: none;
-  background-color: ${props => (props.active ? 'rgba(0, 0, 0, 0.07)' : undefined)};
+  background-color: ${props => (props.active === 'true' ? 'rgba(0, 0, 0, 0.07)' : undefined)};
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.03);
@@ -100,7 +100,7 @@ const Dialog = props => {
   return (
     <StyledDialog
       to={`/direct/` + props.userId}
-      active={isActiveV}
+      active={isActiveV.toString()}
       // disabled={props.isGettingMessagesInProgress}
     >
       <UserAvatar photo={props.photo} size={props.size || 50} />
@@ -108,11 +108,7 @@ const Dialog = props => {
         <StyledDialogName>{props.userName}</StyledDialogName>
         <StyledDialogText>{lastDialogActivityDateText}</StyledDialogText>
       </StyledTextWrap>
-      {newMessagesCount !== 0 ? (
-        <StyledNewMessageCountMark>{newMessagesCount}</StyledNewMessageCountMark>
-      ) : (
-        undefined
-      )}
+      {newMessagesCount !== 0 ? <StyledNewMessageCountMark>{newMessagesCount}</StyledNewMessageCountMark> : undefined}
     </StyledDialog>
   );
 };

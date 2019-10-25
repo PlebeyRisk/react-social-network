@@ -107,7 +107,7 @@ export const clearIntervalThunk = (id, name) => dispatch => {
 
 export const clearAllIntervals = (startingIntervals) => dispatch => {
 
-  startingIntervals.values().forEach((timerId => clearInterval(timerId)));
+  Array(startingIntervals.values()).forEach((timerId => clearInterval(timerId)));
 
   dispatch(clearAllIntervalsAction());
 

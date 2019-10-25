@@ -1,7 +1,8 @@
 import {
   createStore,
   combineReducers,
-  applyMiddleware
+  applyMiddleware,
+  compose
 } from "redux";
 import directReducer from "./direct-reducer";
 import searchUsersReducer from "./search-users-reducer";
@@ -22,7 +23,12 @@ let reducers = combineReducers({
   app: appReducer
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, /* preloadedState, */ composeEnhancers(
+    applyMiddleware(thunkMiddleware)
+  ));
+
+// let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = store;
 

@@ -7,31 +7,43 @@ import { directSEL } from '../../../../redux/direct-selectors';
 import { sendMessage, getMessages, startChatting } from '../../../../redux/direct-reducer';
 import EmptyMessagesPage from './empty_messages_page';
 import { clearIntervalThunk, setIntervalThunk } from '../../../../redux/app-reducer';
+import Axios from 'axios';
 
 const intervalName = 'messageUpdate';
 let intervalId;
+let cancelTokenSource = Axios.CancelToken.source();
 
 const MessagesContainer = props => {
   const friendId = Number(props.match.params.userId);
 
+  const clearGettingDataThread = () => {
+    cancelTokenSource.cancel('Operation canceled by dialog change');
+    props.clearIntervalThunk(intervalId, intervalName);
+  };
+
+  const startGettingDataThread = () => {
+    clearGettingDataThread();
+
+    cancelTokenSource = Axios.CancelToken.source();
+    props.setIntervalThunk(() => props.getMessages(friendId, cancelTokenSource.token), 1000, intervalName);
+
+    intervalId = props.startingIntervals.get(intervalName);
+  };
+
   useEffect(() => {
     if (!friendId) {
-      props.clearIntervalThunk(intervalId, intervalName);
+      clearGettingDataThread();
       return;
     }
 
-    props.clearIntervalThunk(intervalId, intervalName);
-    props.setIntervalThunk(() => props.getMessages(friendId), 1000, intervalName);
-
-    intervalId = props.startingIntervals.get(intervalName);
+    startGettingDataThread();
 
     return () => {
-      props.clearIntervalThunk(intervalId, intervalName);
+      clearGettingDataThread();
     };
   }, [friendId]);
 
   const sendMessage = formData => {
-    console.log(formData);
     if (!formData.message || formData.message.trim().length === 0) return;
     props.sendMessage(friendId, formData.message);
 

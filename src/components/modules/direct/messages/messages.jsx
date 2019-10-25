@@ -15,8 +15,6 @@ const StyledMessages = styled.div`
 `;
 
 const Messages = props => {
-  if (!props.messages) return <Preloader />;
-
   return (
     <StyledMessages>
       {props.dialogInfo ? <MessagesHeader dialogInfo={props.dialogInfo} /> : undefined}
@@ -27,10 +25,7 @@ const Messages = props => {
         isGettingMessagesInProgress={props.isGettingMessagesInProgress}
       />
 
-      <SendMessageForm
-        onSubmit={props.sendMessage}
-        isSendingMessageInProgress={props.isSendingMessageInProgress}
-      />
+      <SendMessageForm onSubmit={props.sendMessage} isSendingMessageInProgress={props.isSendingMessageInProgress} />
     </StyledMessages>
   );
 };

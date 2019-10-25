@@ -2,11 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Route, withRouter } from 'react-router-dom';
 import Nav from './components/modules/nav/nav';
-import Main from './components/modules/main/main';
-import Explore from './components/modules/explore/explore';
-import DirectContainer from './components/modules/direct/direct_container';
-import ProfileContainer from './components/modules/profile/profile_container';
-import LoginContainer from './components/modules/login/login_container';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { initializeApp, clearAllIntervals, setIntervalThunk, clearIntervalThunk} from './redux/app-reducer';
@@ -14,6 +9,13 @@ import Preloader from './components/common/preloader';
 import { checkForTotalNewMessages } from './redux/direct-reducer';
 import { appSEL } from './redux/app-selectors';
 import { authSEL } from './redux/auth-selectors';
+import { withSuspense } from './components/hoc/withSuspense';
+
+const LoginContainer = React.lazy(() => import('./components/modules/login/login_container'));
+const Explore = React.lazy(() => import('./components/modules/explore/explore'));
+const Main = React.lazy(() => import('./components/modules/main/main'));
+const DirectContainer = React.lazy(() => import('./components/modules/direct/direct_container'));
+const ProfileContainer = React.lazy(() => import('./components/modules/profile/profile_container'));
 
 const StyledApp = styled.div`
   display: flex;
@@ -71,11 +73,11 @@ class App extends React.Component {
       <StyledApp>
         {!isLogin ? <Nav/> : undefined}
         <StyledWrapperContent>
-          <Route exact path="/" component={Main} />
-          <Route path="/explore" component={Explore} />
-          <Route path="/direct/:userId?" component={DirectContainer} />
-          <Route path="/profile/:userId?" component={ProfileContainer} />
-          <Route path="/login" component={LoginContainer} />
+          <Route exact path="/" component={withSuspense(Main)} />
+          <Route path="/explore" component={withSuspense(Explore)} />
+          <Route path="/direct/:userId?" component={withSuspense(DirectContainer)} />
+          <Route path="/profile/:userId?" component={withSuspense(ProfileContainer)} />
+          <Route path="/login" component={withSuspense(LoginContainer)} />
         </StyledWrapperContent>
       </StyledApp>
     );

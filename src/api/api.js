@@ -64,12 +64,12 @@ const startChatting = (userId) => {
   return instance.put(`dialogs/${userId}`).then(response => response.data, (error) => console.log('error fetching startChatting(): ' + error));
 }
 
-const getAllDialogs = () => {
-  return instance.get(`dialogs`).then(response => response.data, (error) => console.log('error fetching getAllDialogs(): ' + error));
+const getAllDialogs = (cancelToken) => {
+  return instance.get(`dialogs`, { cancelToken }).then(response => response.data, (error) => console.log('error fetching getAllDialogs(): ' + error));
 }
 
-const getMessages = (userId) => {
-  return instance.get(`dialogs/${userId}/messages`).then(response => response.data, (error) => console.log('error fetching getMessages(): ' + error));
+const getMessages = (userId, cancelToken) => {
+  return instance.get(`dialogs/${userId}/messages`, { cancelToken }).then(response => response.data, (error) => console.log('error fetching getMessages(): ' + error));
 }
 
 const sendMessage = (userId, body) => {

@@ -3,6 +3,7 @@ import {reset, stopSubmit} from "redux-form"
 
 const SET_DIALOGS = 'SET_DIALOGS';
 const SET_MESSAGES = 'SET_MESSAGES';
+const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
 const ADD_MESSAGE = 'ADD_MESSAGE';
 const UPDATE_START_CHATTING_PROGRESS = 'UPDATE_START_CHATTING_PROGRESS';
 const UPDATE_GETTING_DIALOGS_PROGRESS = 'UPDATE_GETTING_DIALOGS_PROGRESS';
@@ -36,97 +37,76 @@ const initialState = {
 const directReducer = (state = initialState, action) => {
 
   switch (action.type) {
-    case UPDATE_START_CHATTING_PROGRESS: {
-      let stateCopy = {
+    case UPDATE_START_CHATTING_PROGRESS:
+      return {
         ...state,
         isStartChattingInProgress: action.progress,
-      };
-      return stateCopy;
-    }
-    case UPDATE_GETTING_DIALOGS_PROGRESS: {
-      let stateCopy = {
+      }
+    case UPDATE_GETTING_DIALOGS_PROGRESS:
+      return {
         ...state,
         isGettingDialogsInProgress: action.progress,
-      };
-      return stateCopy;
-    }
-    case UPDATE_SENDING_MESSAGE_PROGRESS: {
-      let stateCopy = {
+      }
+    case UPDATE_SENDING_MESSAGE_PROGRESS:
+      return {
         ...state,
         isSendingMessageInProgress: action.progress,
-      };
-      return stateCopy;
-    }
-    case UPDATE_GETTING_MESSAGES_PROGRESS: {
-      let stateCopy = {
+      }
+    case UPDATE_GETTING_MESSAGES_PROGRESS:
+      return {
         ...state,
         isGettingMessagesInProgress: action.progress,
-      };
-      return stateCopy;
-    }
-    case SET_DIALOGS: {
-      let stateCopy = {
+      }
+    case SET_DIALOGS:
+      return {
         ...state,
         dialogs: [...action.dialogs],
-      };
-      return stateCopy;
-    }
-    case SET_MESSAGES: {
-      let stateCopy = {
+      }
+    case SET_MESSAGES:
+      return {
         ...state,
         messages: [...action.messages],
-      };
-      return stateCopy;
-    }
-    case ADD_MESSAGE: {
-      let stateCopy = {
+      }
+    case CLEAR_MESSAGES:
+      return {
+        ...state,
+        messages: null,
+      }
+    case ADD_MESSAGE:
+      return {
         ...state,
         messages: [...state.messages, action.message],
-      };
-      return stateCopy;
-    }
-    case UPDATE_DIRECT_INITIALIZED: {
-      let stateCopy = {
+      }
+    case UPDATE_DIRECT_INITIALIZED:
+      return {
         ...state,
         initialized: true,
-      };
-      return stateCopy;
-    }
-    case UPDATE_DIALOGS_INITIALIZED: {
-      let stateCopy = {
+      }
+    case UPDATE_DIALOGS_INITIALIZED:
+      return {
         ...state,
         initializedDialogs: true,
-      };
-      return stateCopy;
-    }
-    case UPDATE_MESSAGES_INITIALIZED: {
-      let stateCopy = {
+      }
+    case UPDATE_MESSAGES_INITIALIZED:
+      return {
         ...state,
         initializedMessages: true,
-      };
-      return stateCopy;
-    }
-    case SET_NEW_MESSAGES_IN_DIALOGS_COUNT: {
-      let stateCopy = {
+      }
+    case SET_NEW_MESSAGES_IN_DIALOGS_COUNT:
+      return {
         ...state,
         newMessagesInDialogsCount: action.count,
-      };
-      return stateCopy;
-    }
-    case SET_NEW_MESSAGES_TOTAL_COUNT: {
-      let stateCopy = {
+      }
+    case SET_NEW_MESSAGES_TOTAL_COUNT:
+      return {
         ...state,
         newMessagesTotalCount: action.count,
-      };
-      return stateCopy;
-    }
-    case UPDATE_TOTAL_CHECKING_NEW_MESSAGES_IN_PROGRESS: {
-      let stateCopy = {
+      }
+    case UPDATE_TOTAL_CHECKING_NEW_MESSAGES_IN_PROGRESS:
+      return {
         ...state,
         isTotalCheckingNewMessagesInProgress: action.progress,
-      };
-      return stateCopy;
-    }
+      }
     default:
       return state;
   };
@@ -155,6 +135,9 @@ export const setDialogs = (dialogs) => ({
 export const setMessages = (messages) => ({
   type: SET_MESSAGES,
   messages
+});
+export const clearMessages = () => ({
+  type: CLEAR_MESSAGES,
 });
 export const addMessage = (message) => ({
   type: ADD_MESSAGE,
@@ -195,11 +178,11 @@ export const startChatting = (userId) => async (dispatch) => {
   }
 };
 
-export const getAllDialogs = () => async (dispatch) => {
+export const getAllDialogs = (cancelToken = null) => async (dispatch) => {
   dispatch(updateGettingDialogsProgress(true));
   console.log(`getting all dialogs`);
 
-  const response = await directAPI.getAllDialogs();
+  const response = await directAPI.getAllDialogs(cancelToken);
 
   dispatch(updateGettingDialogsProgress(false));
   if (!response) return;
@@ -223,11 +206,11 @@ export const sendMessage = (userId, message) => async (dispatch) => {
   }
 };
 
-export const getMessages = (userId) => async (dispatch) => {
+export const getMessages = (userId, cancelToken= null) => async (dispatch) => {
   dispatch(updateGettingMessagesProgress(true));
   console.log(`getting messages ${userId}`);
 
-  const response = await directAPI.getMessages(userId);
+  const response = await directAPI.getMessages(userId, cancelToken);
 
   dispatch(updateGettingMessagesProgress(false));
   if (!response) return;
