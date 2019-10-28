@@ -32,9 +32,9 @@ const Login = props => {
     <StyledLogin>
       <MainContainer>
         <StyledBox>
-          <StyledLogoText>
+          {/* <StyledLogoText>
             <img src={logoTextIcon} alt="logo text" width="175" />
-          </StyledLogoText>
+          </StyledLogoText> */}
           <LoginForm {...props} />
         </StyledBox>
       </MainContainer>
