@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import defaultImage from '../../../../img/users/ava-default.jpg';
 import optionsIcon from '../../../../img/options.svg';
+import logoutIcon from '../../../../img/logout.svg';
 import { colors } from '../../../../theme/globalStyle';
 import UserStatus from './user_status/user_status';
 import Following from './following/following';
@@ -84,7 +85,7 @@ const StyledOptionsBtnIcon = styled.span`
   display: block;
   width: 24px;
   height: 24px;
-  background: url(${optionsIcon}) center no-repeat;
+  background: url(${logoutIcon}) center no-repeat;
   background-size: cover;
 `;
 
