@@ -1,43 +1,43 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "917b1b238fbe95078b9676beedaaf88b",
+    "revision": "0ca0bb8ab4dc137b2b7315d2512d1f2e",
     "url": "/react-social-network/index.html"
   },
   {
-    "revision": "668df7a83836bb642f75",
-    "url": "/react-social-network/static/js/0.92994e6c.chunk.js"
+    "revision": "d0e0d145c0557bdb1423",
+    "url": "/react-social-network/static/js/0.0b02934d.chunk.js"
   },
   {
-    "revision": "24b132aa4ed4dd1f33b6",
-    "url": "/react-social-network/static/js/3.08213571.chunk.js"
+    "revision": "b5193cb8baabd7ae384b",
+    "url": "/react-social-network/static/js/3.216af101.chunk.js"
   },
   {
-    "revision": "655a2b64cf928fd79ca9",
-    "url": "/react-social-network/static/js/4.1bd89765.chunk.js"
+    "revision": "34e40f85d9be8b3fcd49",
+    "url": "/react-social-network/static/js/4.230ec442.chunk.js"
   },
   {
     "revision": "6a8959b74a836748a524",
     "url": "/react-social-network/static/js/5.57fb7016.chunk.js"
   },
   {
-    "revision": "eb0cffa6a9bef2d0a605",
-    "url": "/react-social-network/static/js/6.b91a7a4e.chunk.js"
+    "revision": "dda32fc5c49d8f86a576",
+    "url": "/react-social-network/static/js/6.9e78942f.chunk.js"
   },
   {
-    "revision": "96cc990267685121c5c6",
-    "url": "/react-social-network/static/js/7.8234c033.chunk.js"
+    "revision": "6ca2cf8ae09814efbae9",
+    "url": "/react-social-network/static/js/7.bd2a1453.chunk.js"
   },
   {
     "revision": "c892c817395c267a1b4b",
     "url": "/react-social-network/static/js/8.0d0f8131.chunk.js"
   },
   {
-    "revision": "8ed6d11f2d9ead9f3262",
-    "url": "/react-social-network/static/js/main.53dcbf56.chunk.js"
+    "revision": "24226e5ee5d0d04262f1",
+    "url": "/react-social-network/static/js/main.788ed32d.chunk.js"
   },
   {
-    "revision": "51db55a98454ebeff895",
-    "url": "/react-social-network/static/js/runtime-main.e6cdbc76.js"
+    "revision": "939b9f5f930200f4e83a",
+    "url": "/react-social-network/static/js/runtime-main.9995c883.js"
   },
   {
     "revision": "8500807754f548342b59851e20e5ea2d",
