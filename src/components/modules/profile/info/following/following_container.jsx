@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import UsersList from '../../../users_form/users_list';
 
 const UsersFormContainer = props => {

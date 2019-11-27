@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Dialog from './dialog';
 import defaultImage from '../../../../img/users/ava-default.jpg';
@@ -32,9 +32,9 @@ const Dialogs = props => {
     );
   });
 
-  const scrollToTop = () => {
-    firstDialogRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const scrollToTop = () => {
+  //   firstDialogRef.current.scrollIntoView({ behavior: 'smooth' });
+  // };
 
   // useEffect(scrollToTop, [props.]);
 

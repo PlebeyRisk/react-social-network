@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-awesome-modal';
 import { colors } from '../../../../../theme/globalStyle';
@@ -58,21 +58,6 @@ const StyledContent = styled.div`
 
 const Following = props => {
   const [visibleModalMode, setVisibleModalMode] = useState(false);
-  // const [localFollowingUsers, setLocalFollowingUsers] = useState([]);
-
-  // const updateLocalFollowingUsers = () => {
-  //   const changedUsers = compareArraysByInOutObj(localFollowingUsers, props.followingUsers, 'out');
-  //   if (changedUsers.length === 0) return;
-  //   const lastChangedUser = changedUsers[changedUsers.length - 1];
-  //   console.log(lastChangedUser);
-  //   setLocalFollowingUsers([
-  //     ...updateObjectInArray(localFollowingUsers, lastChangedUser.id, 'id', { followed: !lastChangedUser.followed }),
-  //   ]);
-  // };
-
-  // useEffect(() => {
-  //   updateLocalFollowingUsers();
-  // }, [props.followingUsers]);
 
   const clearUnfollowingUsers = () => {
     props.setFollowingUsers([...getObjectsOfArrayByProperty(props.followingUsers, false, 'followed', 'out')]);

@@ -174,7 +174,7 @@ export const loadUser = userId => async dispatch => {
   dispatch(updateFetching(true));
 
   const response = await profileAPI.getUserInfo(userId);
-  console.log(response);
+
   dispatch(updateFetching(false));
   if (!response) return;
 

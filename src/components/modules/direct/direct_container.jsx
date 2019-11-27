@@ -30,10 +30,7 @@ const DirectContainer = props => {
     props.updateDialogsInitialized();
   }
 
-  if (
-    !props.initializedMessages &&
-    (!friendId || (props.messages !== null && props.messages !== undefined))
-  ) {
+  if (!props.initializedMessages && (!friendId || (props.messages !== null && props.messages !== undefined))) {
     props.updateMessagesInitialized();
   }
 

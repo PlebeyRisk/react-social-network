@@ -238,8 +238,6 @@ export const checkForTotalNewMessages = () => async (dispatch) => {
 
     dispatch(setNewMessagesInDialogsCount(dialogsWithNewMessages.length));
     dispatch(setNewMessagesTotalCount(totalCount));
-
-    //console.log(`dialogsNewMessages: ${dialogsWithNewMessages.length}, totalNewMessages: ${totalCount}`);
   } else {
     dispatch(setNewMessagesInDialogsCount(0));
     dispatch(setNewMessagesTotalCount(0));
