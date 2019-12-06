@@ -108,7 +108,7 @@ const Dialog = props => {
         <StyledDialogName>{props.userName}</StyledDialogName>
         <StyledDialogText>{lastDialogActivityDateText}</StyledDialogText>
       </StyledTextWrap>
-      {newMessagesCount !== 0 ? <StyledNewMessageCountMark>{newMessagesCount}</StyledNewMessageCountMark> : undefined}
+      {newMessagesCount > 0 ? <StyledNewMessageCountMark>{newMessagesCount}</StyledNewMessageCountMark> : undefined}
     </StyledDialog>
   );
 };
